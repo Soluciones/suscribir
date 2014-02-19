@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140219182146) do
+ActiveRecord::Schema.define(:version => 20140219182744) do
 
   create_table "suscribir_suscripciones", :force => true do |t|
     t.integer  "suscribible_id",                     :null => false
@@ -33,6 +33,11 @@ ActiveRecord::Schema.define(:version => 20140219182146) do
   add_index "suscribir_suscripciones", ["provincia_id", "activo", "suscribible_type", "suscribible_id", "dominio_de_alta"], :name => "ix_suscripciones_on_provincia_activo_suscribible_and_dominio"
   add_index "suscribir_suscripciones", ["suscribible_type", "suscribible_id", "dominio_de_alta", "email"], :name => "ix_suscripciones_on_suscribible_and_dominio_and_email", :unique => true
   add_index "suscribir_suscripciones", ["suscriptor_type", "suscriptor_id", "activo"], :name => "ix_suscripciones_on_suscriptor_and_activo"
+
+  create_table "tematicas", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "usuarios", :force => true do |t|
     t.string   "nombre"
