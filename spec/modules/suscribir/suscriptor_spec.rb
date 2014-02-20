@@ -23,4 +23,14 @@ describe Suscribir::Suscriptor do
       end
     end
   end
+
+  describe "#suscribeme_a!" do
+    it "crea una suscripcion al suscriptor" do
+      subject.busca_suscripcion(suscribible, dominio_de_alta).should be_nil
+
+      subject.suscribeme_a!(suscribible, dominio_de_alta)
+
+      subject.busca_suscripcion(suscribible, dominio_de_alta).should_not be_nil
+    end
+  end
 end
