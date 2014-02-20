@@ -6,6 +6,11 @@ module Suscribir
 
     @sendgrid = nil
 
+    def initialize(*args)
+      acceso = args.first if args.present?
+      configura_sendgrid(acceso)
+    end
+
     def update(metodo, suscripcion)
       return unless metodo.to_sym == :suscribir
 
@@ -16,9 +21,21 @@ module Suscribir
     end
 
   private
+    def configura_sendgrid(acceso)
+      @sendgrid = case acceso.class.to_s
+        when 'GatlingGun'
+          acceso
+        when 'Hash'
+          GatlingGun.new(acceso[:user], acceso[:password])
+        else
+          usuario = Rails.application.class::ENV_CONFIG["SENDGRID_USER_NAME"]
+          password = Rails.application.class::ENV_CONFIG["SENDGRID_PASSWORD"]
+          GatlingGun.new(usuario, password)
+      end
+    end
 
     def sendgrid
-      @sendgrid ||= GatlingGun.new('x', 'x')
+      @sendgrid
     end
 
     def dame_nombre_lista(suscripcion)
