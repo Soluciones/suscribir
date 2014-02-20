@@ -27,10 +27,31 @@ describe Suscribir::Suscripcion do
       end
     end
 
+    shared_examples "suscripcion notificando a observadores" do
+      context "si la suscripcion se realiza con éxito" do
+        it "notifica a sus observadores" do
+          described_class.should_receive(:notify_observers).with(:suscribir, an_instance_of(described_class))
+
+          described_class.suscribir(suscriptor, suscribible)
+        end
+      end
+
+      context "si la suscripcion falla al guardar" do
+        before { described_class.stub(:create).and_return(false) }
+
+        it "no notifica a sus observadores" do
+          described_class.should_not_receive(:notify_observers).with(:suscribir, an_instance_of(described_class))
+
+          described_class.suscribir(suscriptor, suscribible)
+        end
+      end
+    end
+
     context "para un suscriptor persistido (p.ej.: Usuario)" do
       let(:suscriptor) { FactoryGirl.create(:usuario) }
 
       it_behaves_like "suscripcion copiando datos"
+      it_behaves_like "suscripcion notificando a observadores"
 
       it "crea una suscripción relacionada a un Suscriptor" do
         suscripcion = described_class.suscribir(suscriptor, suscribible)
@@ -45,6 +66,7 @@ describe Suscribir::Suscripcion do
       let(:suscriptor) { FactoryGirl.build(:suscriptor_anonimo) }
 
       it_behaves_like "suscripcion copiando datos"
+      it_behaves_like "suscripcion notificando a observadores"
 
       it "crea una suscripción no relacionada a un Suscriptor" do
         suscripcion = described_class.suscribir(suscriptor, suscribible)
