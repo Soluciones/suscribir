@@ -5,7 +5,7 @@ require "spec_helper"
 describe Suscribir::Suscribible do
   subject { Tematica.create }
   let(:dominio_de_alta) { 'es' }
-  let(:suscriptor) { Usuario.create(nombre: Faker::Name.first_name, apellidos: Faker::Name.last_name, email: Faker::Internet.email) }
+  let(:suscriptor) { FactoryGirl.create(:usuario) }
 
 
   describe "#busca_suscripcion" do
