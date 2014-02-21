@@ -30,7 +30,7 @@ describe Suscribir::Suscripcion do
     shared_examples "suscripcion notificando a observadores" do
       context "si la suscripcion se realiza con éxito" do
         it "notifica a sus observadores" do
-          described_class.should_receive(:notify_observers).with(:suscribir, an_instance_of(described_class))
+          described_class.should_receive(:notify_observers).with(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, an_instance_of(described_class))
 
           described_class.suscribir(suscriptor, suscribible)
         end
@@ -40,7 +40,7 @@ describe Suscribir::Suscripcion do
         before { described_class.stub(:create).and_return(false) }
 
         it "no notifica a sus observadores" do
-          described_class.should_not_receive(:notify_observers).with(:suscribir, an_instance_of(described_class))
+          described_class.should_not_receive(:notify_observers).with(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, an_instance_of(described_class))
 
           described_class.suscribir(suscriptor, suscribible)
         end

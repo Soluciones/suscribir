@@ -2,6 +2,8 @@
 
 module Suscribir
   class Suscripcion < ActiveRecord::Base
+    EVENTO_SUSCRIBIR = :suscribir
+
     belongs_to :suscribible, polymorphic: true
     belongs_to :suscriptor, polymorphic: true
 
@@ -16,7 +18,7 @@ module Suscribir
 
       suscripcion = create(atributos_de_la_suscripcion)
 
-      notify_observers(:suscribir, suscripcion) if suscripcion
+      notify_observers(EVENTO_SUSCRIBIR, suscripcion) if suscripcion
 
       suscripcion
     end
