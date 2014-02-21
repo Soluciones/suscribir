@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     suscribir (0.0.1)
+      gatling_gun
       rails (~> 3.1.12)
 
 GEM
@@ -39,6 +40,13 @@ GEM
     builder (3.0.4)
     diff-lcs (1.2.5)
     erubis (2.7.0)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.0)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
+    ffaker (1.23.0)
+    gatling_gun (0.0.3)
     hike (1.2.3)
     i18n (0.6.9)
     jquery-rails (3.1.0)
@@ -107,6 +115,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  factory_girl_rails
+  ffaker
   jquery-rails
   mysql2
   rspec-rails
