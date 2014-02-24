@@ -1,0 +1,1 @@
+[0.0.2] Añadido belongs_to :provincia a Suscripcion
