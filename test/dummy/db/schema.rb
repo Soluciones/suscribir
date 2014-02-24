@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140219182744) do
+ActiveRecord::Schema.define(:version => 20140224125810) do
 
   create_table "suscribir_suscripciones", :force => true do |t|
     t.integer  "suscribible_id",                     :null => false
-    t.integer  "suscribible_type",                   :null => false
+    t.string   "suscribible_type",                   :null => false
     t.string   "dominio_de_alta",  :default => "es", :null => false
     t.integer  "suscriptor_id"
     t.string   "suscriptor_type"
