@@ -6,6 +6,7 @@ module Suscribir
 
     belongs_to :suscribible, polymorphic: true
     belongs_to :suscriptor, polymorphic: true
+    belongs_to :provincia
 
     validates :suscribible_type, :suscribible_id, presence: true
     validates :dominio_de_alta, presence: true
