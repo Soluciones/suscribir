@@ -28,6 +28,10 @@ module Suscribir
         suscripcion
       end
 
+      def desuscribir(suscriptor, suscribible, dominio_de_alta = 'es')
+        busca_suscripcion(suscriptor, suscribible, dominio_de_alta).destroy
+      end
+
       def busca_suscripcion(suscriptor, suscribible, dominio_de_alta = 'es')
         email = suscriptor.respond_to?(:email) ? suscriptor.email : suscriptor
 

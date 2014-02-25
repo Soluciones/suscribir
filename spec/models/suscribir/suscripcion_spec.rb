@@ -95,4 +95,32 @@ describe Suscribir::Suscripcion do
       end
     end
   end
+
+  describe ".desuscribir" do
+    context "con una suscripción" do
+      let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
+
+      context "pasando un email" do
+        it "elimina la suscripción a partir del email, suscribible y dominio" do
+          described_class.busca_suscripcion(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+
+          described_class.desuscribir(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+
+          described_class.busca_suscripcion(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta).should be_nil
+        end
+      end
+
+      context "pasando un suscriptor" do
+        let!(:suscripcion) { FactoryGirl.create(:suscripcion_con_suscriptor) }
+
+        it "elimina la suscripción a partir del suscriptor, suscribible y dominio" do
+          described_class.busca_suscripcion(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+
+          described_class.desuscribir(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+
+          described_class.busca_suscripcion(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta).should be_nil
+        end
+      end
+    end
+  end
 end
