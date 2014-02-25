@@ -33,4 +33,18 @@ describe Suscribir::Suscriptor do
       subject.busca_suscripcion(suscribible, dominio_de_alta).should_not be_nil
     end
   end
+
+  describe "#desuscribeme_de!" do
+    context "con una suscripción" do
+      before { subject.suscripciones << Suscribir::Suscripcion.create(suscribible: suscribible, email: subject.email) }
+
+      it "elimina una suscripcion al suscriptor" do
+        subject.busca_suscripcion(suscribible, dominio_de_alta).should_not be_nil
+
+        subject.desuscribeme_de!(suscribible, dominio_de_alta)
+
+        subject.busca_suscripcion(suscribible, dominio_de_alta).should be_nil
+      end
+    end
+  end
 end
