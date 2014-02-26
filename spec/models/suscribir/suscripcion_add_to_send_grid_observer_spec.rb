@@ -13,11 +13,9 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
 
   before(:each) do
     # Hacemos stub de todos los métodos para evitar llamadas reales a la API
-    GatlingGun.any_instance.stub(:add_newsletter)
     GatlingGun.any_instance.stub(:add_list)
     GatlingGun.any_instance.stub(:add_email)
-    GatlingGun.any_instance.stub(:add_recipient)
-    GatlingGun.any_instance.stub(:add_schedule)
+    GatlingGun.any_instance.stub(:get_list).and_return(GatlingGun::Response.new({}))
   end
 
   describe ".initialize" do
