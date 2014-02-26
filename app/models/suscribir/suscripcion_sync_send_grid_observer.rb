@@ -20,12 +20,12 @@ module Suscribir
       nombre_lista = dame_nombre_lista(suscripcion)
       sendgrid.add_list(nombre_lista) unless lista_existe?(nombre_lista)
       datos_suscriptor = dame_atributos_del_suscriptor(suscripcion)
-      anyadir_suscriptor_a_lista(nombre_lista, datos_suscriptor)
+      sendgrid.add_email(nombre_lista, datos_suscriptor)
     end
 
     def update_desuscribir(suscripcion)
       nombre_lista = dame_nombre_lista(suscripcion)
-      eliminar_suscriptor_de_lista(nombre_lista, suscripcion.email)
+      sendgrid.delete_email(nombre_lista, suscripcion.email)
     end
 
   private
@@ -62,14 +62,6 @@ module Suscribir
         cod_postal: suscripcion.cod_postal,
         provincia_id: suscripcion.provincia_id
       }
-    end
-
-    def anyadir_suscriptor_a_lista(nombre_lista, datos_suscriptor)
-      sendgrid.add_email(nombre_lista, datos_suscriptor)
-    end
-
-    def eliminar_suscriptor_de_lista(nombre_lista, email)
-      sendgrid.delete_email(nombre_lista, email)
     end
   end
 end
