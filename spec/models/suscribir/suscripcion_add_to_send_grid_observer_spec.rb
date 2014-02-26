@@ -71,7 +71,7 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
         it "crea la lista" do
           GatlingGun.any_instance.should_receive(:add_list).with(nombre_lista)
 
-          subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+          subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
       end
 
@@ -87,7 +87,7 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
         it "no crea la lista" do
           GatlingGun.any_instance.should_not_receive(:add_list).with(nombre_lista)
 
-          subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+          subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
       end
 
@@ -99,7 +99,7 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
           suscriptor[:provincia_id].should == suscripcion.provincia_id
         end
 
-        subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+        subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
       end
     end
 

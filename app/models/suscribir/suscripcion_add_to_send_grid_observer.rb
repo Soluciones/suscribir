@@ -12,7 +12,7 @@ module Suscribir
     end
 
     def update(metodo, suscripcion)
-      return unless metodo.to_sym == Suscripcion::EVENTO_SUSCRIBIR
+      return unless metodo.to_sym == SuscripcionMediator::EVENTO_SUSCRIBIR
 
       nombre_lista = dame_nombre_lista(suscripcion)
       sendgrid.add_list(nombre_lista) unless lista_existe?(nombre_lista)
