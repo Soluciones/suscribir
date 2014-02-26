@@ -3,8 +3,6 @@
 module Suscribir
   module SuscripcionBase
     extend ActiveSupport::Concern
-    EVENTO_SUSCRIBIR = :suscribir
-    EVENTO_DESUSCRIBIR = :desuscribir
 
     included do
       belongs_to :suscribible, polymorphic: true
@@ -23,6 +21,16 @@ module Suscribir
         atributos_de_la_suscripcion = atributos_del_suscriptor.merge(atributos_del_suscribible)
 
         create(atributos_de_la_suscripcion)
+      end
+
+      def desuscribir(suscriptor, suscribible, dominio_de_alta = 'es')
+        busca_suscripcion(suscriptor, suscribible, dominio_de_alta).destroy
+      end
+
+      def busca_suscripcion(suscriptor, suscribible, dominio_de_alta = 'es')
+        email = suscriptor.respond_to?(:email) ? suscriptor.email : suscriptor
+
+        where(email: email, suscribible_id: suscribible.id, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta).first
       end
 
     private

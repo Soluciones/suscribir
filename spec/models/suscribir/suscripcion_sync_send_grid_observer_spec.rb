@@ -112,7 +112,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
           email.should == suscripcion.email
         end
 
-        subject.update(Suscribir::Suscripcion::EVENTO_DESUSCRIBIR, suscripcion)
+        subject.update(Suscribir::SuscripcionMediator::EVENTO_DESUSCRIBIR, suscripcion)
       end
     end
 

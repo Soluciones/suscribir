@@ -16,4 +16,8 @@ module Suscribir::Suscribible
   def suscribe_a!(suscriptor, dominio_de_alta = 'es')
     suscripciones.create(suscriptor: suscriptor, email: suscriptor.email, dominio_de_alta: dominio_de_alta)
   end
+
+  def desuscribe_a!(suscriptor, dominio_de_alta)
+    busca_suscripcion(suscriptor, dominio_de_alta).destroy
+  end
 end
