@@ -3,8 +3,6 @@
 module Suscribir
   module SuscripcionBase
     extend ActiveSupport::Concern
-    EVENTO_SUSCRIBIR = :suscribir
-    EVENTO_DESUSCRIBIR = :desuscribir
 
     included do
       belongs_to :suscribible, polymorphic: true
