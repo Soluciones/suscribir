@@ -90,7 +90,8 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
       end
 
       it "añade el suscriptor a la lista correspondiente de SendGrid" do
-        GatlingGun.any_instance.should_receive(:add_email) do |_, suscriptor|
+        GatlingGun.any_instance.should_receive(:add_email) do |nombre_lista_recibido, suscriptor|
+          nombre_lista_recibido.should == nombre_lista
           suscriptor[:email].should == suscripcion.email
           suscriptor[:nombre_apellidos].should == suscripcion.nombre_apellidos
           suscriptor[:cod_postal].should == suscripcion.cod_postal
