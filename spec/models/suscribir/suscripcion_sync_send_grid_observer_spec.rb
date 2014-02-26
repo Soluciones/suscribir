@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Suscribir::SuscripcionAddToSendGridObserver do
+describe Suscribir::SuscripcionSyncSendGridObserver do
   subject { described_class.new }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
@@ -13,11 +13,10 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
 
   before(:each) do
     # Hacemos stub de todos los métodos para evitar llamadas reales a la API
-    GatlingGun.any_instance.stub(:add_newsletter)
     GatlingGun.any_instance.stub(:add_list)
     GatlingGun.any_instance.stub(:add_email)
-    GatlingGun.any_instance.stub(:add_recipient)
-    GatlingGun.any_instance.stub(:add_schedule)
+    GatlingGun.any_instance.stub(:get_list).and_return(GatlingGun::Response.new({}))
+    GatlingGun.any_instance.stub(:delete_email)
   end
 
   describe ".initialize" do
@@ -71,7 +70,7 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
         it "crea la lista" do
           GatlingGun.any_instance.should_receive(:add_list).with(nombre_lista)
 
-          subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+          subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
       end
 
@@ -87,19 +86,33 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
         it "no crea la lista" do
           GatlingGun.any_instance.should_not_receive(:add_list).with(nombre_lista)
 
-          subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+          subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
       end
 
       it "añade el suscriptor a la lista correspondiente de SendGrid" do
-        GatlingGun.any_instance.should_receive(:add_email) do |_, suscriptor|
+        GatlingGun.any_instance.should_receive(:add_email) do |nombre_lista_recibido, suscriptor|
+          nombre_lista_recibido.should == nombre_lista
           suscriptor[:email].should == suscripcion.email
           suscriptor[:nombre_apellidos].should == suscripcion.nombre_apellidos
           suscriptor[:cod_postal].should == suscripcion.cod_postal
           suscriptor[:provincia_id].should == suscripcion.provincia_id
         end
 
-        subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+        subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
+      end
+    end
+
+    context "al borrar una suscripcion" do
+      let(:nombre_lista) { "#{suscribible.nombre} (#{suscribible.class.model_name} id: #{suscribible.id})" }
+
+      it "borra el suscriptor de la lista correspondiente de SendGrid" do
+        GatlingGun.any_instance.should_receive(:delete_email) do |nombre_lista_recibido, email|
+          nombre_lista_recibido.should == nombre_lista
+          email.should == suscripcion.email
+        end
+
+        subject.update(Suscribir::SuscripcionMediator::EVENTO_DESUSCRIBIR, suscripcion)
       end
     end
 
@@ -107,6 +120,7 @@ describe Suscribir::SuscripcionAddToSendGridObserver do
       it "no hace nada" do
         GatlingGun.any_instance.should_not_receive(:add_list)
         GatlingGun.any_instance.should_not_receive(:add_email)
+        GatlingGun.any_instance.should_not_receive(:delete_email)
 
         subject.update(:no_me_observes, suscripcion)
       end

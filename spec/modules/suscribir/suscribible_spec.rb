@@ -24,6 +24,16 @@ describe Suscribir::Suscribible do
     end
   end
 
+  describe "#suscribe_a!" do
+    it "crea una suscripcion al suscribible" do
+      subject.busca_suscripcion(suscriptor, dominio_de_alta).should be_nil
+
+      subject.suscribe_a!(suscriptor, dominio_de_alta)
+
+      subject.busca_suscripcion(suscriptor, dominio_de_alta).should_not be_nil
+    end
+  end
+
   describe "#desuscribe_a!" do
     context "con una suscripción" do
       before { subject.suscripciones << Suscribir::Suscripcion.create(suscriptor: suscriptor, email: suscriptor.email) }

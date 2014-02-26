@@ -1,7 +1,7 @@
 # coding: UTF-8
 
 module Suscribir
-  class SuscripcionAddToSendGridObserver
+  class SuscripcionSyncSendGridObserver
     require 'gatling_gun'
 
     @sendgrid = nil
@@ -12,12 +12,20 @@ module Suscribir
     end
 
     def update(metodo, suscripcion)
-      return unless metodo.to_sym == Suscripcion::EVENTO_SUSCRIBIR
+      handler_method = "update_#{metodo}"
+      send(handler_method, suscripcion) if respond_to? handler_method
+    end
 
+    def update_suscribir(suscripcion)
       nombre_lista = dame_nombre_lista(suscripcion)
       sendgrid.add_list(nombre_lista) unless lista_existe?(nombre_lista)
       datos_suscriptor = dame_atributos_del_suscriptor(suscripcion)
       anyadir_suscriptor_a_lista(nombre_lista, datos_suscriptor)
+    end
+
+    def update_desuscribir(suscripcion)
+      nombre_lista = dame_nombre_lista(suscripcion)
+      eliminar_suscriptor_de_lista(nombre_lista, suscripcion.email)
     end
 
   private
@@ -47,10 +55,6 @@ module Suscribir
       sendgrid.get_list(nombre_lista).success?
     end
 
-    def anyadir_suscriptor_a_lista(nombre_lista, datos_suscriptor)
-      sendgrid.add_email(nombre_lista, datos_suscriptor)
-    end
-
     def dame_atributos_del_suscriptor(suscripcion)
       {
         email: suscripcion.email,
@@ -58,6 +62,14 @@ module Suscribir
         cod_postal: suscripcion.cod_postal,
         provincia_id: suscripcion.provincia_id
       }
+    end
+
+    def anyadir_suscriptor_a_lista(nombre_lista, datos_suscriptor)
+      sendgrid.add_email(nombre_lista, datos_suscriptor)
+    end
+
+    def eliminar_suscriptor_de_lista(nombre_lista, email)
+      sendgrid.delete_email(nombre_lista, email)
     end
   end
 end
