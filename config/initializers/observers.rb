@@ -2,5 +2,6 @@
 
 unless Rails.env.test?
   Suscribir::SuscripcionMediator.add_observer Suscribir::SuscripcionAddToSendGridObserver.new
+  Suscribir::SuscripcionMediator.add_observer Suscribir::SuscripcionDeleteFromSendGridObserver.new
   Suscribir::SuscripcionMediator.add_observer Suscribir::SuscripcionSetUserIfFoundObserver.new
 end
