@@ -22,7 +22,7 @@ describe Suscribir::SuscripcionSetUserIfFoundObserver do
         let!(:usuario) { Usuario.create(email: suscripcion.email) }
 
         it "le asigna el usuario a la suscripción" do
-          subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+          subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
 
           suscripcion.suscriptor_id.should == usuario.id
           suscripcion.suscriptor_type.should == usuario.class.model_name
@@ -31,7 +31,7 @@ describe Suscribir::SuscripcionSetUserIfFoundObserver do
 
       context "con un email que no tenemos registrado como usuario" do
         it "no hace nada" do
-          subject.update(Suscribir::Suscripcion::EVENTO_SUSCRIBIR, suscripcion)
+          subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
 
           no_hace_nada
         end
