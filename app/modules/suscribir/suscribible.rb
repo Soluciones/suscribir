@@ -12,4 +12,8 @@ module Suscribir::Suscribible
   def busca_suscripcion(suscriptor, dominio_de_alta)
     suscripciones.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta).first
   end
+
+  def suscribe_a!(suscriptor, dominio_de_alta = 'es')
+    suscripciones.create(suscriptor: suscriptor, email: suscriptor.email, dominio_de_alta: dominio_de_alta)
+  end
 end
