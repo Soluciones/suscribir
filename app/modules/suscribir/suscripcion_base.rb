@@ -33,6 +33,12 @@ module Suscribir
         where(email: email, suscribible_id: suscribible.id, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta).first
       end
 
+      def busca_suscripciones(suscriptor, dominio_de_alta = 'es')
+        email = suscriptor.respond_to?(:email) ? suscriptor.email : suscriptor
+
+        where(email: email, dominio_de_alta: dominio_de_alta)
+      end
+
     private
 
       def dame_atributos_del_suscriptor(suscriptor)

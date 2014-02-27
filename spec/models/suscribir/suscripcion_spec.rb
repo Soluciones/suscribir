@@ -74,6 +74,26 @@ describe Suscribir::Suscripcion do
     end
   end
 
+  describe ".busca_suscripciones" do
+    let!(:suscripciones) { FactoryGirl.create_list(:suscripcion, 2, email: suscriptor.email, dominio_de_alta: dominio_de_alta) }
+
+    context "con dos suscripciones del mismo suscriptor" do
+      context "pasando un email y un dominio" do
+        let(:suscriptor) { FactoryGirl.build(:suscriptor_anonimo) }
+        it "encuentra las suscripciones" do
+          described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).should have(2).suscripciones
+        end
+      end
+
+      context "pasando un suscriptor y un dominio" do
+        let(:suscriptor) { FactoryGirl.create(:usuario) }
+        it "encuentra las suscripciones" do
+          described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).should have(2).suscripciones
+        end
+      end
+    end
+  end
+
   describe ".desuscribir" do
     context "con una suscripción" do
       let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
