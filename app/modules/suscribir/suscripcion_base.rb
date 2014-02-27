@@ -16,6 +16,8 @@ module Suscribir
 
     module ClassMethods
       def suscribir(suscriptor, suscribible, dominio_de_alta = 'es')
+        return suscribir_multiple(suscriptor, suscribible, dominio_de_alta) if suscribible.respond_to?(:each)
+
         atributos_del_suscriptor = dame_atributos_del_suscriptor(suscriptor)
         atributos_del_suscribible = { suscribible: suscribible, dominio_de_alta: dominio_de_alta }
         atributos_de_la_suscripcion = atributos_del_suscriptor.merge(atributos_del_suscribible)
@@ -40,6 +42,12 @@ module Suscribir
       end
 
     private
+
+      def suscribir_multiple(suscriptor, suscribibles, dominio_de_alta = 'es')
+        suscribibles.each_with_object([]) do |suscribible, suscripciones|
+          suscripciones << suscribir(suscriptor, suscribible, dominio_de_alta)
+        end
+      end
 
       def dame_atributos_del_suscriptor(suscriptor)
         {
