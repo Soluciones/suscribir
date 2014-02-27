@@ -41,12 +41,32 @@ describe Suscribir::Suscribible do
   end
 
   describe "#suscribe_a!" do
-    it "crea una suscripcion al suscribible" do
-      subject.busca_suscripcion(suscriptor, dominio_de_alta).should be_nil
+    context "pasando un suscriptor" do
+      it "crea una suscripcion al suscribible" do
+        subject.busca_suscripcion(suscriptor, dominio_de_alta).should be_nil
 
-      subject.suscribe_a!(suscriptor, dominio_de_alta)
+        subject.suscribe_a!(suscriptor, dominio_de_alta)
 
-      subject.busca_suscripcion(suscriptor, dominio_de_alta).should_not be_nil
+        subject.busca_suscripcion(suscriptor, dominio_de_alta).should_not be_nil
+      end
+    end
+
+    context "pasando un array de suscriptores" do
+      let(:suscriptores) { FactoryGirl.create_list(:usuario, 3) }
+
+      it "crea multiples suscripciones" do
+        subject.suscribe_a!(suscriptores, dominio_de_alta)
+
+        subject.suscripciones.map(&:email).should =~ suscriptores.map(&:email)
+      end
+
+      it "devuelve las suscripciones creadas" do
+        suscripciones_creadas = subject.suscribe_a!(suscriptores, dominio_de_alta)
+
+        suscripciones_encontradas = subject.busca_suscripciones(dominio_de_alta)
+
+        suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
+      end
     end
   end
 
