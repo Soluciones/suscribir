@@ -24,6 +24,22 @@ describe Suscribir::Suscriptor do
     end
   end
 
+  describe "#busca_suscripciones" do
+    context "sin ninguna suscripción" do
+      it "debe devolver vacío" do
+        subject.busca_suscripciones(dominio_de_alta).should be_empty
+      end
+    end
+
+    context "con dos suscripciones" do
+      before { 2.times { FactoryGirl.create(:suscripcion, suscriptor: subject, dominio_de_alta: dominio_de_alta) } }
+
+      it "debe devolver dos suscripciones" do
+        subject.busca_suscripciones(dominio_de_alta).should have(2).suscripciones
+      end
+    end
+  end
+
   describe "#suscribeme_a!" do
     it "crea una suscripcion al suscriptor" do
       subject.busca_suscripcion(suscribible, dominio_de_alta).should be_nil

@@ -13,6 +13,10 @@ module Suscribir::Suscriptor
     suscripciones.where(suscribible_id: suscribible.id, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta).first
   end
 
+  def busca_suscripciones(dominio_de_alta)
+    suscripciones.where(dominio_de_alta: dominio_de_alta)
+  end
+
   def suscribeme_a!(suscribible, dominio_de_alta = 'es')
     suscripciones.create(email: email, suscribible_id: suscribible.id, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
   end
