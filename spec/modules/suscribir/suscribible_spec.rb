@@ -24,13 +24,49 @@ describe Suscribir::Suscribible do
     end
   end
 
+  describe "#busca_suscripciones" do
+    context "sin ninguna suscripción" do
+      it "debe devolver vacío" do
+        subject.busca_suscripciones(dominio_de_alta).should be_empty
+      end
+    end
+
+    context "con dos suscripciones" do
+      before { 2.times { FactoryGirl.create(:suscripcion, suscribible: subject, dominio_de_alta: dominio_de_alta) } }
+
+      it "debe devolver dos suscripciones" do
+        subject.busca_suscripciones(dominio_de_alta).should have(2).suscripciones
+      end
+    end
+  end
+
   describe "#suscribe_a!" do
-    it "crea una suscripcion al suscribible" do
-      subject.busca_suscripcion(suscriptor, dominio_de_alta).should be_nil
+    context "pasando un suscriptor" do
+      it "crea una suscripcion al suscribible" do
+        subject.busca_suscripcion(suscriptor, dominio_de_alta).should be_nil
 
-      subject.suscribe_a!(suscriptor, dominio_de_alta)
+        subject.suscribe_a!(suscriptor, dominio_de_alta)
 
-      subject.busca_suscripcion(suscriptor, dominio_de_alta).should_not be_nil
+        subject.busca_suscripcion(suscriptor, dominio_de_alta).should_not be_nil
+      end
+    end
+
+    context "pasando un array de suscriptores" do
+      let(:suscriptores) { FactoryGirl.create_list(:usuario, 3) }
+
+      it "crea multiples suscripciones" do
+        subject.suscribe_a!(suscriptores, dominio_de_alta)
+
+        subject.suscripciones.map(&:email).should =~ suscriptores.map(&:email)
+      end
+
+      it "devuelve las suscripciones creadas" do
+        suscripciones_creadas = subject.suscribe_a!(suscriptores, dominio_de_alta)
+
+        suscripciones_encontradas = subject.busca_suscripciones(dominio_de_alta)
+
+        suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
+      end
     end
   end
 
