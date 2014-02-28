@@ -1,3 +1,5 @@
+[0.1.0] Acepta múltiples suscripciones en las llamadas de suscribir, suscribeme_a! y suscribe_a!
+        Permite desuscribir.
 [0.0.4] Extraída la lógica de Suscribir:Suscripcion a Suscribir:SuscripcionBase para poder incluirlo como módulo en la aplicación principal.
 [0.0.3] Corregido el tipo de columna suscribir_suscripciones.suscribible_type. Antes era integer, ahora string.
 [0.0.2] Añadido belongs_to :provincia a Suscripcion
