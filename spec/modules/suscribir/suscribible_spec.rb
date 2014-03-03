@@ -43,11 +43,11 @@ describe Suscribir::Suscribible do
   describe "#suscribe_a!" do
     context "pasando un suscriptor" do
       it "crea una suscripcion al suscribible" do
-        subject.busca_suscripcion(suscriptor, dominio_de_alta).should be_nil
+        subject.suscripciones.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta).should be_empty
 
         subject.suscribe_a!(suscriptor, dominio_de_alta)
 
-        subject.busca_suscripcion(suscriptor, dominio_de_alta).should_not be_nil
+        subject.suscripciones.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta).should_not be_empty
       end
     end
 
@@ -63,7 +63,7 @@ describe Suscribir::Suscribible do
       it "devuelve las suscripciones creadas" do
         suscripciones_creadas = subject.suscribe_a!(suscriptores, dominio_de_alta)
 
-        suscripciones_encontradas = subject.busca_suscripciones(dominio_de_alta)
+        suscripciones_encontradas = subject.suscripciones.where(dominio_de_alta: dominio_de_alta)
 
         suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
       end
@@ -75,11 +75,11 @@ describe Suscribir::Suscribible do
       before { subject.suscripciones << Suscribir::Suscripcion.create(suscriptor: suscriptor, email: suscriptor.email) }
 
       it "elimina una suscripcion al suscriptor" do
-        subject.busca_suscripcion(suscriptor, dominio_de_alta).should_not be_nil
+        subject.suscripciones.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta).should_not be_empty
 
         subject.desuscribe_a!(suscriptor, dominio_de_alta)
 
-        subject.busca_suscripcion(suscriptor, dominio_de_alta).should be_nil
+        subject.suscripciones.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta).should be_empty
       end
     end
   end
