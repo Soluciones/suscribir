@@ -48,6 +48,27 @@ describe Suscribir::Suscripcion do
           suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
         end
       end
+
+      context "pasando un array de suscriptores" do
+        let(:suscriptores) { FactoryGirl.create_list(:usuario, 3) }
+
+        it "crea multiples suscripciones" do
+          described_class.suscribir(suscriptores, suscribible, dominio_de_alta)
+
+          suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+
+          suscripciones_encontradas.map(&:email).should =~ suscriptores.map(&:email)
+          suscripciones_encontradas.all?{ |s| s.suscribible_id == suscribible.id }.should be_true
+        end
+
+        it "devuelve las suscripciones creadas" do
+          suscripciones_creadas = described_class.suscribir(suscriptores, suscribible, dominio_de_alta)
+
+          suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+
+          suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
+        end
+      end
     end
 
     context "para un suscriptor persistido (p.ej.: Usuario)" do
