@@ -69,6 +69,15 @@ describe Suscribir::Suscripcion do
           suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
         end
       end
+
+      context "intentando crear una suscripcion duplicada" do
+        let!(:suscripcion_existente) { FactoryGirl.create(:suscripcion_con_suscriptor) }
+
+        it "devuleve la suscripción original" do
+          suscripcion_devuleta = described_class.suscribir(suscripcion_existente.suscriptor, suscripcion_existente.suscribible, suscripcion_existente.dominio_de_alta)
+          suscripcion_devuleta.id.should == suscripcion_existente.id
+        end
+      end
     end
 
     context "para un suscriptor persistido (p.ej.: Usuario)" do

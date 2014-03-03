@@ -19,6 +19,10 @@ module Suscribir
         return suscribir_multiples_suscribibles(suscriptor, suscribible, dominio_de_alta) if suscribible.respond_to?(:each)
         return suscribir_multiples_suscriptores(suscriptor, suscribible, dominio_de_alta) if suscriptor.respond_to?(:each)
 
+        if suscripcion_existente = busca_suscripcion(suscriptor, suscribible, dominio_de_alta)
+          return suscripcion_existente
+        end
+
         atributos_del_suscriptor = dame_atributos_del_suscriptor(suscriptor)
         atributos_del_suscribible = { suscribible: suscribible, dominio_de_alta: dominio_de_alta }
         atributos_de_la_suscripcion = atributos_del_suscriptor.merge(atributos_del_suscribible)
