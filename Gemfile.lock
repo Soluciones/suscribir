@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    suscribir (1.1.1)
+    suscribir (1.2.0)
       gatling_gun
       rails (~> 3.1.12)
 

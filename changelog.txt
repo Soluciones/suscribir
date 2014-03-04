@@ -1,3 +1,5 @@
+[1.2.0] SuscripcionMediator no notificaba a los observers cuando se borraba una Suscripcion
+        Se añade la posibilidad de desuscribir multiples Suscribibles
 [1.1.1] La llamada a la API de SendGrid ahora se realiza correctamente
 [1.1.0] Los nombres de las listas de suscriptores se obtienen desde Suscribible#nombre_lista
 [1.0.0] Los métodos de suscripción (Suscripcion.suscribir, Suscriptor#suscribeme_a! y Suscribible#suscribe_a!) ahora devuelven la suscripción existente en caso de intentar crear un duplicado.
