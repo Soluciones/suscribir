@@ -1,4 +1,5 @@
-[1.1.0] Los nombre de las listas de suscriptores se obtienen desde Suscribible#nombre_lista
+[1.1.1] La llamada a la API de SendGrid ahora se realiza correctamente
+[1.1.0] Los nombres de las listas de suscriptores se obtienen desde Suscribible#nombre_lista
 [1.0.0] Los métodos de suscripción (Suscripcion.suscribir, Suscriptor#suscribeme_a! y Suscribible#suscribe_a!) ahora devuelven la suscripción existente en caso de intentar crear un duplicado.
 [0.1.0] Acepta múltiples suscripciones en las llamadas de suscribir, suscribeme_a! y suscribe_a!
         Permite desuscribir.
