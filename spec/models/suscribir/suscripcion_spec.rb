@@ -163,6 +163,21 @@ describe Suscribir::Suscripcion do
           suscripciones_encontradas.should be_empty
         end
       end
+
+      context "con varias suscripciones" do
+        let(:email) { Faker::Internet.email }
+        let!(:suscripciones) { FactoryGirl.create_list(:suscripcion, 3, email: email, dominio_de_alta: dominio_de_alta) }
+
+        it "elimina las suscripciones a partir del email, suscribible y dominio" do
+          suscripciones_encontradas = described_class.where(email: email, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.should_not be_empty
+
+          described_class.desuscribir(email, suscripciones.map(&:suscribible), dominio_de_alta).should_not be_nil
+
+          suscripciones_encontradas = described_class.where(email: email, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.should be_empty
+        end
+      end
     end
 
     context "pasando un suscriptor" do
@@ -176,6 +191,21 @@ describe Suscribir::Suscripcion do
           described_class.desuscribir(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
 
           suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.should be_empty
+        end
+      end
+
+      context "con varias suscripciones" do
+        let(:suscriptor) { FactoryGirl.create(:usuario) }
+        let!(:suscripciones) { FactoryGirl.create_list(:suscripcion_con_suscriptor, 3, suscriptor: suscriptor, dominio_de_alta: dominio_de_alta) }
+
+        it "elimina las suscripciones a partir del email, suscribible y dominio" do
+          suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.should_not be_empty
+
+          described_class.desuscribir(suscriptor, suscripciones.map(&:suscribible), dominio_de_alta).should_not be_nil
+
+          suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
           suscripciones_encontradas.should be_empty
         end
       end
