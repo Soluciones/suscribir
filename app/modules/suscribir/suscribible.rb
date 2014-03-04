@@ -24,4 +24,8 @@ module Suscribir::Suscribible
   def desuscribe_a!(suscriptor, dominio_de_alta)
     busca_suscripcion(suscriptor, dominio_de_alta).destroy
   end
+
+  def nombre_lista
+    "#{self.class.model_name} id: #{id}#{ "(#{nombre})" if respond_to?(:nombre) }"
+  end
 end
