@@ -17,15 +17,13 @@ module Suscribir
     end
 
     def update_suscribir(suscripcion)
-      nombre_lista = dame_nombre_lista(suscripcion)
-      sendgrid.add_list(nombre_lista) unless lista_existe?(nombre_lista)
+      sendgrid.add_list(suscripcion.nombre_lista) unless lista_existe?(suscripcion.nombre_lista)
       datos_suscriptor = dame_atributos_del_suscriptor(suscripcion)
-      sendgrid.add_email(nombre_lista, datos_suscriptor)
+      sendgrid.add_email(suscripcion.nombre_lista, datos_suscriptor)
     end
 
     def update_desuscribir(suscripcion)
-      nombre_lista = dame_nombre_lista(suscripcion)
-      sendgrid.delete_email(nombre_lista, suscripcion.email)
+      sendgrid.delete_email(suscripcion.nombre_lista, suscripcion.email)
     end
 
   private
@@ -45,12 +43,6 @@ module Suscribir
     def sendgrid
       @sendgrid
     end
-
-    def dame_nombre_lista(suscripcion)
-      suscribible = suscripcion.suscribible
-      "#{suscribible.nombre} (#{suscribible.class.model_name} id: #{suscribible.id})"
-    end
-
     def lista_existe?(nombre_lista)
       sendgrid.get_list(nombre_lista).success?
     end

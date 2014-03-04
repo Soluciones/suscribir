@@ -53,4 +53,23 @@ describe Suscribir::Suscribible do
       end
     end
   end
+
+  describe "#nombre_lista" do
+    context "con un suscribible sin nombre" do
+      it "da un nombre identificativo para la lista de suscriptores" do
+        subject.nombre_lista.should include subject.id.to_s
+        subject.nombre_lista.should include subject.class.model_name
+      end
+    end
+
+    context "con un suscribible con nombre" do
+      before { subject.stub(nombre: Faker::Lorem.sentence) }
+
+      it "da un nombre identificativo para la lista de suscriptores" do
+        subject.nombre_lista.should include subject.id.to_s
+        subject.nombre_lista.should include subject.class.model_name
+        subject.nombre_lista.should include subject.nombre
+      end
+    end
+  end
 end
