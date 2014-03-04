@@ -40,20 +40,6 @@ describe Suscribir::Suscribible do
     end
   end
 
-  describe "#desuscribe_a!" do
-    context "con una suscripción" do
-      before { subject.suscripciones << Suscribir::Suscripcion.create(suscriptor: suscriptor, email: suscriptor.email) }
-
-      it "elimina una suscripcion al suscriptor" do
-        subject.suscripciones.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta).should_not be_empty
-
-        subject.desuscribe_a!(suscriptor, dominio_de_alta)
-
-        subject.suscripciones.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta).should be_empty
-      end
-    end
-  end
-
   describe "#nombre_lista" do
     context "con un suscribible sin nombre" do
       it "da un nombre identificativo para la lista de suscriptores" do
