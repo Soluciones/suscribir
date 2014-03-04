@@ -180,4 +180,12 @@ describe Suscribir::Suscripcion do
       end
     end
   end
+
+  describe "#nombre_lista" do
+    subject { FactoryGirl.create(:suscripcion) }
+
+    it "delega el método a su suscribible" do
+      subject.nombre_lista.should == subject.suscribible.nombre_lista
+    end
+  end
 end
