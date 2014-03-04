@@ -150,10 +150,9 @@ describe Suscribir::Suscripcion do
   end
 
   describe ".desuscribir" do
-    context "con una suscripción" do
-      let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
-
-      context "pasando un email" do
+    context "pasando un email" do
+      context "con una suscripción" do
+        let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
         it "elimina la suscripción a partir del email, suscribible y dominio" do
           suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
           suscripciones_encontradas.should_not be_empty
@@ -164,8 +163,10 @@ describe Suscribir::Suscripcion do
           suscripciones_encontradas.should be_empty
         end
       end
+    end
 
-      context "pasando un suscriptor" do
+    context "pasando un suscriptor" do
+      context "con una suscripción" do
         let!(:suscripcion) { FactoryGirl.create(:suscripcion_con_suscriptor) }
 
         it "elimina la suscripción a partir del suscriptor, suscribible y dominio" do
