@@ -22,7 +22,7 @@ module Suscribir::Suscribible
   end
 
   def desuscribe_a!(suscriptor, dominio_de_alta)
-    busca_suscripcion(suscriptor, dominio_de_alta).destroy
+    Suscribir::Suscripcion.desuscribir(suscriptor, self, dominio_de_alta)
   end
 
   def nombre_lista

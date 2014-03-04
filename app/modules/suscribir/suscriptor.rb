@@ -22,6 +22,6 @@ module Suscribir::Suscriptor
   end
 
   def desuscribeme_de!(suscribible, dominio_de_alta = 'es')
-    busca_suscripcion(suscribible, dominio_de_alta).destroy
+    Suscribir::Suscripcion.desuscribir(self, suscribible, dominio_de_alta)
   end
 end
