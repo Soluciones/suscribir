@@ -22,4 +22,13 @@ describe Suscribir::SuscripcionMediator do
       subject.after_create(suscripcion)
     end
   end
+
+  describe "#after_destroy" do
+    let(:suscripcion) { FactoryGirl.build(:suscripcion) }
+    it "notifica a sus observadores con EVENTO_DESUSCRIBIR" do
+      described_class.should_receive(:notify_observers).with(Suscribir::SuscripcionMediator::EVENTO_DESUSCRIBIR, suscripcion)
+
+      subject.after_destroy(suscripcion)
+    end
+  end
 end
