@@ -94,9 +94,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
         GatlingGun.any_instance.should_receive(:add_email) do |nombre_lista_recibido, suscriptor|
           nombre_lista_recibido.should == nombre_lista
           suscriptor[:email].should == suscripcion.email
-          suscriptor[:nombre_apellidos].should == suscripcion.nombre_apellidos
-          suscriptor[:cod_postal].should == suscripcion.cod_postal
-          suscriptor[:provincia_id].should == suscripcion.provincia_id
+          suscriptor[:name].should == suscripcion.nombre_apellidos
         end
 
         subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)

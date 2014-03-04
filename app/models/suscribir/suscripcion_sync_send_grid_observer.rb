@@ -50,9 +50,7 @@ module Suscribir
     def dame_atributos_del_suscriptor(suscripcion)
       {
         email: suscripcion.email,
-        nombre_apellidos: suscripcion.nombre_apellidos,
-        cod_postal: suscripcion.cod_postal,
-        provincia_id: suscripcion.provincia_id
+        name: suscripcion.nombre_apellidos,
       }
     end
   end
