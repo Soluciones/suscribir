@@ -4,9 +4,10 @@ require "spec_helper"
 
 describe Suscribir::SuscripcionSyncSendGridObserver do
   subject { described_class.new }
+  let(:nombre_lista) { Faker::Lorem.sentence }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
-      tematica.stub(:nombre).and_return(Faker::Lorem.sentence)
+      tematica.stub(nombre_lista: nombre_lista)
     end
   end
   let(:suscripcion) { FactoryGirl.build(:suscripcion, suscribible: suscribible) }
@@ -56,7 +57,6 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
 
   describe "#update" do
     context "al crear una suscripcion" do
-      let(:nombre_lista) { "#{suscribible.nombre} (#{suscribible.class.model_name} id: #{suscribible.id})" }
 
       context "cuando la lista de suscriptores al suscribible no existe en SendGrid" do
         before do
@@ -104,8 +104,6 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
     end
 
     context "al borrar una suscripcion" do
-      let(:nombre_lista) { "#{suscribible.nombre} (#{suscribible.class.model_name} id: #{suscribible.id})" }
-
       it "borra el suscriptor de la lista correspondiente de SendGrid" do
         GatlingGun.any_instance.should_receive(:delete_email) do |nombre_lista_recibido, email|
           nombre_lista_recibido.should == nombre_lista
