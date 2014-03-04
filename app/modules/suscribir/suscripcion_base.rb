@@ -33,6 +33,8 @@ module Suscribir
       end
 
       def desuscribir(suscriptor, suscribible, dominio_de_alta = 'es')
+        return desuscribir_multiples_suscribibles(suscriptor, suscribible, dominio_de_alta) if suscribible.respond_to?(:each)
+
         busca_suscripcion(suscriptor, suscribible, dominio_de_alta).destroy
       end
 
@@ -59,6 +61,12 @@ module Suscribir
       def suscribir_multiples_suscriptores(suscriptores, suscribible, dominio_de_alta = 'es')
         suscriptores.each_with_object([]) do |suscriptor, suscripciones|
           suscripciones << suscribir(suscriptor, suscribible, dominio_de_alta)
+        end
+      end
+
+      def desuscribir_multiples_suscribibles(suscriptor, suscribibles, dominio_de_alta = 'es')
+        suscribibles.each_with_object([]) do |suscribible, suscripciones|
+          suscripciones << desuscribir(suscriptor, suscribible, dominio_de_alta)
         end
       end
 
