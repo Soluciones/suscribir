@@ -14,6 +14,8 @@ module Suscribir
       validates :suscribible_type, :suscribible_id, presence: true
       validates :dominio_de_alta, presence: true
       validates :email, presence: true, uniqueness: { scope: [:suscribible_type, :suscribible_id, :dominio_de_alta] }
+
+      scope :activas, -> { where(activo: true) }
     end
 
     module ClassMethods
