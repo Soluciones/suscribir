@@ -1,0 +1,7 @@
+language: ruby
+cache: bundler
+rvm:
+  - "1.9.3"
+before_script:
+  - mysql -e 'create database suscribir_engine_test;'
+  - bundle exec rake db:setup
