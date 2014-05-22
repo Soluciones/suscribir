@@ -35,8 +35,8 @@ module Suscribir
           GatlingGun.new(acceso[:user], acceso[:password])
         else
           if Rails.env.production?
-            usuario = ENV_CONFIG["SENDGRID_USER_NAME"]
-            password = ENV_CONFIG["SENDGRID_PASSWORD"]
+            usuario = ENV_CONFIG['SENDGRID_USER_NAME']
+            password = ENV_CONFIG['SENDGRID_PASSWORD']
           else
             usuario = 'usuario_sendgrid'
             password = 'p455W0rd_s3nd6r1d'

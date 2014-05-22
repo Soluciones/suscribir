@@ -45,8 +45,8 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
 
     context "si no recibe nada" do
       it "coge la configuración de la aplicación" do
-        usuario = ENV_CONFIG["SENDGRID_USER_NAME"]
-        password = ENV_CONFIG["SENDGRID_PASSWORD"]
+        usuario = ENV_CONFIG['SENDGRID_USER_NAME']
+        password = ENV_CONFIG['SENDGRID_PASSWORD']
 
         GatlingGun.should_receive(:new).with(usuario, password).and_call_original
 
