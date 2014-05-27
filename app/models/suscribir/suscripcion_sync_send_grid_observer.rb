@@ -4,8 +4,6 @@ module Suscribir
   class SuscripcionSyncSendGridObserver
     require 'gatling_gun'
 
-    @sendgrid = nil
-
     def initialize(*args)
       acceso = args.first if args.present?
       configura_sendgrid(acceso)
@@ -17,13 +15,13 @@ module Suscribir
     end
 
     def update_suscribir(suscripcion)
-      sendgrid.add_list(suscripcion.nombre_lista) unless lista_existe?(suscripcion.nombre_lista)
+      @sendgrid.add_list(suscripcion.nombre_lista) unless lista_existe?(suscripcion.nombre_lista)
       datos_suscriptor = dame_atributos_del_suscriptor(suscripcion)
-      sendgrid.add_email(suscripcion.nombre_lista, datos_suscriptor)
+      @sendgrid.add_email(suscripcion.nombre_lista, datos_suscriptor)
     end
 
     def update_desuscribir(suscripcion)
-      sendgrid.delete_email(suscripcion.nombre_lista, suscripcion.email)
+      @sendgrid.delete_email(suscripcion.nombre_lista, suscripcion.email)
     end
 
   private
@@ -45,11 +43,8 @@ module Suscribir
       end
     end
 
-    def sendgrid
-      @sendgrid
-    end
     def lista_existe?(nombre_lista)
-      sendgrid.get_list(nombre_lista).success?
+      @sendgrid.get_list(nombre_lista).success?
     end
 
     def dame_atributos_del_suscriptor(suscripcion)

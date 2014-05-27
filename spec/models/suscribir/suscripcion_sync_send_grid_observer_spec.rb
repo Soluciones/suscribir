@@ -20,7 +20,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
     GatlingGun.any_instance.stub(:delete_email)
   end
 
-  describe ".initialize" do
+  describe "#initialize" do
 
     context "si recibe un hash" do
       let(:acceso) { { user: Faker::Internet.user_name, password: Faker::Lorem.words(3).join } }
@@ -38,7 +38,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
       it "la usa como conector para SendGrid" do
         instancia = described_class.new(un_gatling_gun)
 
-        conector_interno = instancia.send(:sendgrid)
+        conector_interno = instancia.instance_variable_get(:@sendgrid)
         conector_interno.should == un_gatling_gun
       end
     end
