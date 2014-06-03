@@ -28,6 +28,6 @@ module Suscribir::Suscribible
   end
 
   def nombre_lista
-    "#{self.class.model_name} id: #{id}#{ " (#{nombre})" if respond_to?(:nombre) }"
+    "#{self.class.name} id: #{id}#{ " (#{nombre})" if respond_to?(:nombre) }"
   end
 end

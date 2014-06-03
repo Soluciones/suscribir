@@ -44,7 +44,7 @@ describe Suscribir::Suscribible do
     context "con un suscribible sin nombre" do
       it "da un nombre identificativo para la lista de suscriptores" do
         subject.nombre_lista.should include subject.id.to_s
-        subject.nombre_lista.should include subject.class.model_name
+        subject.nombre_lista.should include subject.class.name
       end
     end
 
@@ -53,7 +53,7 @@ describe Suscribir::Suscribible do
 
       it "da un nombre identificativo para la lista de suscriptores" do
         subject.nombre_lista.should include subject.id.to_s
-        subject.nombre_lista.should include subject.class.model_name
+        subject.nombre_lista.should include subject.class.name
         subject.nombre_lista.should include subject.nombre
       end
     end

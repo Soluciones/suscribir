@@ -25,7 +25,7 @@ describe Suscribir::SuscripcionSetUserIfFoundObserver do
           subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
 
           suscripcion.suscriptor_id.should == usuario.id
-          suscripcion.suscriptor_type.should == usuario.class.model_name
+          suscripcion.suscriptor_type.should == usuario.class.name
         end
       end
 
