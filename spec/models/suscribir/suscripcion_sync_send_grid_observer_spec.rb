@@ -3,7 +3,6 @@
 require "spec_helper"
 
 describe Suscribir::SuscripcionSyncSendGridObserver do
-  subject { described_class.new }
   let(:nombre_lista) { Faker::Lorem.sentence }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
@@ -18,9 +17,11 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
     GatlingGun.any_instance.stub(:add_email)
     GatlingGun.any_instance.stub(:get_list).and_return(GatlingGun::Response.new({}))
     GatlingGun.any_instance.stub(:delete_email)
+
+    stub_const('SENDGRID_NEWSLETTERS', GatlingGun.new(Faker::Internet.user_name, Faker::Lorem.words(3).join))
   end
 
-  describe ".initialize" do
+  describe "#initialize" do
 
     context "si recibe un hash" do
       let(:acceso) { { user: Faker::Internet.user_name, password: Faker::Lorem.words(3).join } }
@@ -34,23 +35,16 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
 
     context "si recibe una instancia de GatlingGun" do
       let(:un_gatling_gun) { GatlingGun.new(Faker::Internet.user_name, Faker::Lorem.words(3).join) }
+      subject { described_class.new(un_gatling_gun) }
 
       it "la usa como conector para SendGrid" do
-        instancia = described_class.new(un_gatling_gun)
-
-        conector_interno = instancia.send(:sendgrid)
-        conector_interno.should == un_gatling_gun
+        subject.instance_variable_get(:@sendgrid).should == un_gatling_gun
       end
     end
 
     context "si no recibe nada" do
       it "coge la configuración de la aplicación" do
-        usuario = Rails.application.class::ENV_CONFIG["SENDGRID_USER_NAME"]
-        password = Rails.application.class::ENV_CONFIG["SENDGRID_PASSWORD"]
-
-        GatlingGun.should_receive(:new).with(usuario, password).and_call_original
-
-        described_class.new
+        subject.instance_variable_get(:@sendgrid).should == SENDGRID_NEWSLETTERS
       end
     end
   end
