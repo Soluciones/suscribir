@@ -20,4 +20,4 @@ DotPosition:
 
 AllCops:
   Exclude:
-    - db/schema.rb
+    - test/dummy/db/schema.rb
