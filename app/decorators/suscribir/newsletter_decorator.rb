@@ -2,6 +2,6 @@ module Suscribir
   class NewsletterDecorator < Draper::Decorator
     delegate_all
 
-    include SuscribibleDecorator
+    include Decorators::Suscribible
   end
 end
