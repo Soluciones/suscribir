@@ -45,7 +45,7 @@ module Dummy
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    ENV_CONFIG = { "SENDGRID_USER_NAME" => 'usuario_sendgrid', "SENDGRID_PASSWORD" => 'p455W0rd_s3nd6r1d' }
+    ENV_CONFIG = { 'SENDGRID_USER_NAME' => 'usuario_sendgrid', 'SENDGRID_PASSWORD' => 'p455W0rd_s3nd6r1d' }
   end
 end
 
