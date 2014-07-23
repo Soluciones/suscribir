@@ -1,0 +1,4 @@
+test:
+  adapter: postgresql
+  database: suscribir_engine_test
+  username: postgres
