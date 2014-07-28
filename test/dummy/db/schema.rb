@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140224125810) do
+ActiveRecord::Schema.define(:version => 20140704105909) do
+
+  create_table "suscribir_newsletters", :force => true do |t|
+    t.string   "nombre"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "suscribir_suscripciones", :force => true do |t|
     t.integer  "suscribible_id",                     :null => false
@@ -24,8 +30,8 @@ ActiveRecord::Schema.define(:version => 20140224125810) do
     t.string   "cod_postal"
     t.integer  "provincia_id"
     t.boolean  "activo",           :default => true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   add_index "suscribir_suscripciones", ["activo", "suscribible_type", "suscribible_id", "dominio_de_alta"], :name => "ix_suscripciones_on_activo_and_suscribible_and_dominio"
@@ -35,8 +41,8 @@ ActiveRecord::Schema.define(:version => 20140224125810) do
   add_index "suscribir_suscripciones", ["suscriptor_type", "suscriptor_id", "activo"], :name => "ix_suscripciones_on_suscriptor_and_activo"
 
   create_table "tematicas", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "usuarios", :force => true do |t|
@@ -45,8 +51,8 @@ ActiveRecord::Schema.define(:version => 20140224125810) do
     t.string   "email"
     t.string   "cod_postal"
     t.integer  "provincia_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
 end
