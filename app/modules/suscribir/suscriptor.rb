@@ -10,7 +10,7 @@ module Suscribir::Suscriptor
   end
 
   def busca_suscripcion(suscribible, dominio_de_alta)
-    suscripciones.where(suscribible_id: suscribible.id, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta).first
+    suscripciones.where(suscribible_id: suscribible.id, suscribible_type: suscribible.class.name, dominio_de_alta: dominio_de_alta).first
   end
 
   def busca_suscripciones(dominio_de_alta)

@@ -55,7 +55,7 @@ describe Suscribir::Suscripcion do
         it "crea multiples suscripciones" do
           described_class.suscribir(suscriptores, suscribible, dominio_de_alta)
 
-          suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.name, dominio_de_alta: dominio_de_alta)
 
           suscripciones_encontradas.map(&:email).should =~ suscriptores.map(&:email)
           suscripciones_encontradas.all?{ |s| s.suscribible_id == suscribible.id }.should be_true
@@ -64,7 +64,7 @@ describe Suscribir::Suscripcion do
         it "devuelve las suscripciones creadas" do
           suscripciones_creadas = described_class.suscribir(suscriptores, suscribible, dominio_de_alta)
 
-          suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.name, dominio_de_alta: dominio_de_alta)
 
           suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
         end
@@ -91,7 +91,7 @@ describe Suscribir::Suscripcion do
 
         suscripcion.suscriptor.should_not be_nil
         suscripcion.suscriptor_id.should == suscriptor.id
-        suscripcion.suscriptor_type.should == suscriptor.class.model_name
+        suscripcion.suscriptor_type.should == suscriptor.class.name
       end
     end
 
@@ -154,12 +154,12 @@ describe Suscribir::Suscripcion do
       context "con una suscripción" do
         let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
         it "elimina la suscripción a partir del email, suscribible y dominio" do
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
           suscripciones_encontradas.should_not be_empty
 
           described_class.desuscribir(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
 
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
           suscripciones_encontradas.should be_empty
         end
       end
@@ -185,12 +185,12 @@ describe Suscribir::Suscripcion do
         let!(:suscripcion) { FactoryGirl.create(:suscripcion_con_suscriptor) }
 
         it "elimina la suscripción a partir del suscriptor, suscribible y dominio" do
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
           suscripciones_encontradas.should_not be_empty
 
           described_class.desuscribir(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
 
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.model_name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
           suscripciones_encontradas.should be_empty
         end
       end
