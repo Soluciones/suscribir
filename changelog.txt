@@ -1,3 +1,4 @@
+[5.0.1] Fix a bug caused because the method response.success? doesn't exist on GatlingGun
 [5.0.0] Upgraded to Rails 4.1
 [4.0.0] Upgraded to Rails 4.0
 [3.0.0] Migrated to PostgreSQL
