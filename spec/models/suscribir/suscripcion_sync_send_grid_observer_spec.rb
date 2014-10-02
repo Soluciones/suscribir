@@ -62,7 +62,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
         before do
           GatlingGun.any_instance.stub(:get_list).with(nombre_lista).and_return do
             double("Response").tap do |response|
-              response.stub(:success?).and_return(false)
+              response.stub(:error?).and_return(true)
             end
           end
         end
@@ -78,7 +78,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
         before do
           GatlingGun.any_instance.stub(:get_list).with(nombre_lista).and_return do
             double("Response").tap do |response|
-              response.stub(:success?).and_return(true)
+              response.stub(:error?).and_return(false)
             end
           end
         end
