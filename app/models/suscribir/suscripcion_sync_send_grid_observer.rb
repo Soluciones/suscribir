@@ -44,7 +44,7 @@ module Suscribir
       @sendgrid
     end
     def lista_existe?(nombre_lista)
-      sendgrid.get_list(nombre_lista).success?
+      not sendgrid.get_list(nombre_lista).error?
     end
 
     def dame_atributos_del_suscriptor(suscripcion)
