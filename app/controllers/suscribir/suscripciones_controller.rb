@@ -10,15 +10,16 @@ module Suscribir
     def desuscribir
       suscripcion = Suscribir::Suscripcion.find(params[:suscripcion_id])
       params[:token] == suscripcion.token or return render_404
-      tematica = suscripcion.tematica
       enconded_email = Base64.encode64(suscripcion.email)
       email_tokenizada = tokeniza_email(enconded_email)
       suscripcion.destroy
-      redirect_to baja_realizada_path(tematica_id: tematica.id, email: enconded_email, token: email_tokenizada)
+      clase = Base64.encode64(suscripcion.suscribible_type)
+      redirect_to baja_realizada_path(type: clase, suscribible_id: suscripcion.suscribible_id, email: enconded_email, token: email_tokenizada)
     end
 
     def baja_realizada
-      @tematica = Tematica::Tematica.find(params[:tematica_id])
+      clase = Base64.decode64(params[:type]).constantize
+      @suscribible = clase.find(params[:suscribible_id])
       email_tokenizada = tokeniza_email(params[:email])
       params[:token] == email_tokenizada or return render_404
       @email = Base64.decode64(params[:email])
