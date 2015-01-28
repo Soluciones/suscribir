@@ -1,0 +1,27 @@
+module Suscribir
+  class SuscripcionesController < ApplicationController
+    before_filter :pon_lateral, only: [:pedir_confirmacion_baja, :baja_realizada]
+
+    def pedir_confirmacion_baja
+      @suscripcion = Suscripcion.find(params[:suscripcion_id])
+      render_404 unless params[:token] == @suscripcion.token
+    end
+
+    def desuscribir
+      suscripcion = Suscribir::Suscripcion.find(params[:suscripcion_id])
+      params[:token] == suscripcion.token or return render_404
+      tematica = suscripcion.tematica
+      enconded_email = Base64.encode64(suscripcion.email)
+      email_tokenizada = tokeniza_email(enconded_email)
+      suscripcion.destroy
+      redirect_to baja_realizada_path(tematica_id: tematica.id, email: enconded_email, token: email_tokenizada)
+    end
+
+    def baja_realizada
+      @tematica = Tematica::Tematica.find(params[:tematica_id])
+      email_tokenizada = tokeniza_email(params[:email])
+      params[:token] == email_tokenizada or return render_404
+      @email = Base64.decode64(params[:email])
+    end
+  end
+end
