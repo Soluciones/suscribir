@@ -1,4 +1,5 @@
-require "suscribir/engine"
+require 'suscribir/engine'
+require 'haml-rails'
 
 module Suscribir
 end
