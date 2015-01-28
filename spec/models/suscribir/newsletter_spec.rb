@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Suscribir::Newsletter do
   describe 'integración con NewsletterDecorator y Decorators::Suscribible' do
