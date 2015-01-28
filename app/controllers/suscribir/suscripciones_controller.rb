@@ -1,6 +1,7 @@
 module Suscribir
   class SuscripcionesController < ApplicationController
     before_filter :pon_lateral, only: [:pedir_confirmacion_baja, :baja_realizada]
+    before_filter :sin_breadcrumb
 
     def pedir_confirmacion_baja
       @suscripcion = Suscripcion.find(params[:suscripcion_id])
@@ -23,6 +24,12 @@ module Suscribir
       email_tokenizada = tokeniza_email(params[:email])
       params[:token] == email_tokenizada or return render_404
       @email = Base64.decode64(params[:email])
+    end
+
+  private
+
+    def sin_breadcrumb
+      @sin_breadcrumb = "Sí, por favor, no me pongas breadcrumb"
     end
   end
 end
