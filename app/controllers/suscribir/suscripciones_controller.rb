@@ -2,6 +2,7 @@ module Suscribir
   class SuscripcionesController < ApplicationController
     before_filter :pon_lateral, only: [:pedir_confirmacion_baja, :baja_realizada]
     before_filter :sin_breadcrumb
+    layout 'new_application'
 
     def pedir_confirmacion_baja
       @suscripcion = Suscripcion.find(params[:suscripcion_id])

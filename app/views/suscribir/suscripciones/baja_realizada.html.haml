@@ -1,12 +1,17 @@
 = render 'web/columna'
-%h1 Has sido dado de baja de la suscripción
+.l-desuscripciones
+  %section.panel
+    %header.panel-header.arrow
+      Desuscripción
+    %section.panel-content
+      %h1 Has sido dado de baja de la suscripción
 
-%p
-  Desde este momento no recibirás más emails con la información de la
-  %b #{ @suscribible.class.model_name.human} de #{ @suscribible.nombre }.
+      %p
+        Desde este momento no recibirás más emails con la información de la
+        %b #{ @suscribible.class.model_name.human} de #{ @suscribible.nombre }.
 
-%p Recibirás un último e-mail confirmando tu desuscripción
+      %p Recibirás un último e-mail confirmando tu desuscripción
 
-%p
-  Si te has dado de baja por error puedes
-  = link_to('activar de nuevo tu suscripción', '#')
+      %p
+        Si te has dado de baja por error puedes
+        = link_to('activar de nuevo tu suscripción', '#')
