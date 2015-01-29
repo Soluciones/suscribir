@@ -15,6 +15,7 @@ module Suscribir
       enconded_email = Base64.encode64(suscripcion.email)
       email_tokenizada = tokeniza_email(enconded_email)
       suscripcion.destroy
+      SuscripcionMailer.desuscribir(suscripcion).deliver
       clase = Base64.encode64(suscripcion.suscribible_type)
       redirect_to baja_realizada_path(type: clase, suscribible_id: suscripcion.suscribible_id, email: enconded_email, token: email_tokenizada)
     end

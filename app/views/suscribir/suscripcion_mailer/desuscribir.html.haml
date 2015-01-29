@@ -1,0 +1,13 @@
+.l-desuscripciones
+  %section.panel
+    %header.panel-header.arrow
+      Confirmacion baja de la newsletter
+    %section.panel-content
+      %h1 Hemos eliminado tu e-mail de nuestra lista de suscriptores
+
+      %p ¿Ha podido ser un error? Puedeser que no quisieras darte de baja de nuestra suscripción oque algún amigo al que has enviado este mail te haya dado de baja equivocadamente. Si esasí puedes volver a suscribirte.
+
+      = link_to('SUSCRIBIRME', @url_suscribirme_otra_vez, class: 'btn large')
+
+      %p Para cuaquier dudaocomentario por favor ponte en contacto con
+      = link_to 'info@rankia.com', 'mailto:info@rankia.com'
