@@ -5,7 +5,7 @@ describe Suscribir::Suscripcion do
   let(:suscribible) { Tematica.create }
 
   it "debe ser observable" do
-    described_class.should respond_to :add_observer
+    expect(described_class).to respond_to :add_observer
   end
 
   describe ".suscribir" do
@@ -13,15 +13,15 @@ describe Suscribir::Suscripcion do
       it "rellena el email" do
         suscripcion = described_class.suscribir(suscriptor, suscribible)
 
-        suscripcion.email.should == suscriptor.email
+        expect(suscripcion.email).to eq(suscriptor.email)
       end
 
       it "rellena nombre_apellidos, cod_postal y provincia_id" do
         suscripcion = described_class.suscribir(suscriptor, suscribible)
 
-        suscripcion.nombre_apellidos.should == suscriptor.nombre_apellidos
-        suscripcion.cod_postal.should == suscriptor.cod_postal
-        suscripcion.provincia_id.should == suscriptor.provincia_id
+        expect(suscripcion.nombre_apellidos).to eq(suscriptor.nombre_apellidos)
+        expect(suscripcion.cod_postal).to eq(suscriptor.cod_postal)
+        expect(suscripcion.provincia_id).to eq(suscriptor.provincia_id)
       end
     end
 
@@ -34,8 +34,8 @@ describe Suscribir::Suscripcion do
 
           suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
 
-          suscripciones_encontradas.map(&:suscribible_id).should =~ suscribibles.map(&:id)
-          suscripciones_encontradas.all?{ |s| s.email == suscriptor.email }.should be_true
+          expect(suscripciones_encontradas.map(&:suscribible_id)).to match_array(suscribibles.map(&:id))
+          expect(suscripciones_encontradas.all?{ |s| s.email == suscriptor.email }).to be_truthy
         end
 
         it "devuelve las suscripciones creadas" do
@@ -43,7 +43,7 @@ describe Suscribir::Suscripcion do
 
           suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
 
-          suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
+          expect(suscripciones_creadas.map(&:id)).to match_array(suscripciones_encontradas.map(&:id))
         end
       end
 
@@ -55,8 +55,8 @@ describe Suscribir::Suscripcion do
 
           suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.name, dominio_de_alta: dominio_de_alta)
 
-          suscripciones_encontradas.map(&:email).should =~ suscriptores.map(&:email)
-          suscripciones_encontradas.all?{ |s| s.suscribible_id == suscribible.id }.should be_true
+          expect(suscripciones_encontradas.map(&:email)).to match_array(suscriptores.map(&:email))
+          expect(suscripciones_encontradas.all?{ |s| s.suscribible_id == suscribible.id }).to be_truthy
         end
 
         it "devuelve las suscripciones creadas" do
@@ -64,7 +64,7 @@ describe Suscribir::Suscripcion do
 
           suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.name, dominio_de_alta: dominio_de_alta)
 
-          suscripciones_creadas.map(&:id).should =~ suscripciones_encontradas.map(&:id)
+          expect(suscripciones_creadas.map(&:id)).to match_array(suscripciones_encontradas.map(&:id))
         end
       end
 
@@ -73,7 +73,7 @@ describe Suscribir::Suscripcion do
 
         it "devuleve la suscripción original" do
           suscripcion_devuleta = described_class.suscribir(suscripcion_existente.suscriptor, suscripcion_existente.suscribible, suscripcion_existente.dominio_de_alta)
-          suscripcion_devuleta.id.should == suscripcion_existente.id
+          expect(suscripcion_devuleta.id).to eq(suscripcion_existente.id)
         end
       end
     end
@@ -87,9 +87,9 @@ describe Suscribir::Suscripcion do
       it "crea una suscripción relacionada a un Suscriptor" do
         suscripcion = described_class.suscribir(suscriptor, suscribible)
 
-        suscripcion.suscriptor.should_not be_nil
-        suscripcion.suscriptor_id.should == suscriptor.id
-        suscripcion.suscriptor_type.should == suscriptor.class.name
+        expect(suscripcion.suscriptor).to be_present
+        expect(suscripcion.suscriptor_id).to eq(suscriptor.id)
+        expect(suscripcion.suscriptor_type).to eq(suscriptor.class.name)
       end
     end
 
@@ -102,7 +102,7 @@ describe Suscribir::Suscripcion do
       it "crea una suscripción no relacionada a un Suscriptor" do
         suscripcion = described_class.suscribir(suscriptor, suscribible)
 
-        suscripcion.suscriptor.should be_nil
+        expect(suscripcion.suscriptor).to be_nil
       end
     end
   end
@@ -113,7 +113,7 @@ describe Suscribir::Suscripcion do
 
       context "pasando un email" do
         it "encuentra la suscripción a partir del email, suscribible y dominio" do
-          described_class.busca_suscripcion(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+          expect(described_class.busca_suscripcion(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
         end
       end
 
@@ -121,7 +121,7 @@ describe Suscribir::Suscripcion do
         let!(:suscripcion) { FactoryGirl.create(:suscripcion_con_suscriptor) }
 
         it "encuentra la suscripción a partir del suscriptor, suscribible y dominio" do
-          described_class.busca_suscripcion(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+          expect(described_class.busca_suscripcion(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
         end
       end
     end
@@ -134,14 +134,14 @@ describe Suscribir::Suscripcion do
       context "pasando un email y un dominio" do
         let(:suscriptor) { FactoryGirl.build(:suscriptor_anonimo) }
         it "encuentra las suscripciones" do
-          described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).should have(2).suscripciones
+          expect(described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).size).to eq(2)
         end
       end
 
       context "pasando un suscriptor y un dominio" do
         let(:suscriptor) { FactoryGirl.create(:usuario) }
         it "encuentra las suscripciones" do
-          described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).should have(2).suscripciones
+          expect(described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).size).to eq(2)
         end
       end
     end
@@ -153,12 +153,12 @@ describe Suscribir::Suscripcion do
         let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
         it "elimina la suscripción a partir del email, suscribible y dominio" do
           suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should_not be_empty
+          expect(suscripciones_encontradas).to be_present
 
-          described_class.desuscribir(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+          expect(described_class.desuscribir(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
 
           suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should be_empty
+          expect(suscripciones_encontradas).to be_empty
         end
       end
 
@@ -168,12 +168,12 @@ describe Suscribir::Suscripcion do
 
         it "elimina las suscripciones a partir del email, suscribible y dominio" do
           suscripciones_encontradas = described_class.where(email: email, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should_not be_empty
+          expect(suscripciones_encontradas).to be_present
 
-          described_class.desuscribir(email, suscripciones.map(&:suscribible), dominio_de_alta).should_not be_nil
+          expect(described_class.desuscribir(email, suscripciones.map(&:suscribible), dominio_de_alta)).to be_present
 
           suscripciones_encontradas = described_class.where(email: email, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should be_empty
+          expect(suscripciones_encontradas).to be_empty
         end
       end
     end
@@ -184,12 +184,12 @@ describe Suscribir::Suscripcion do
 
         it "elimina la suscripción a partir del suscriptor, suscribible y dominio" do
           suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should_not be_empty
+          expect(suscripciones_encontradas).to be_present
 
-          described_class.desuscribir(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta).should_not be_nil
+          expect(described_class.desuscribir(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
 
           suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should be_empty
+          expect(suscripciones_encontradas).to be_empty
         end
       end
 
@@ -199,12 +199,12 @@ describe Suscribir::Suscripcion do
 
         it "elimina las suscripciones a partir del email, suscribible y dominio" do
           suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should_not be_empty
+          expect(suscripciones_encontradas).to be_present
 
-          described_class.desuscribir(suscriptor, suscripciones.map(&:suscribible), dominio_de_alta).should_not be_nil
+          expect(described_class.desuscribir(suscriptor, suscripciones.map(&:suscribible), dominio_de_alta)).to be_present
 
           suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
-          suscripciones_encontradas.should be_empty
+          expect(suscripciones_encontradas).to be_empty
         end
       end
     end
@@ -214,7 +214,7 @@ describe Suscribir::Suscripcion do
     subject { FactoryGirl.create(:suscripcion) }
 
     it "delega el método a su suscribible" do
-      subject.nombre_lista.should == subject.suscribible.nombre_lista
+      expect(subject.nombre_lista).to eq(subject.suscribible.nombre_lista)
     end
   end
 end

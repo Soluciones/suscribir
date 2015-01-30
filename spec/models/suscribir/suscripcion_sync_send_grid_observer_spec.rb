@@ -5,17 +5,17 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
   let(:nombre_lista) { Faker::Lorem.sentence }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
-      tematica.stub(nombre_lista: nombre_lista)
+      allow(tematica).to receive(:nombre_lista).with(nombre_lista)
     end
   end
   let(:suscripcion) { FactoryGirl.build(:suscripcion, suscribible: suscribible) }
 
   before(:each) do
     # Hacemos stub de todos los métodos para evitar llamadas reales a la API
-    GatlingGun.any_instance.stub(:add_list)
-    GatlingGun.any_instance.stub(:add_email)
-    GatlingGun.any_instance.stub(:get_list).and_return(GatlingGun::Response.new({}))
-    GatlingGun.any_instance.stub(:delete_email)
+    allow_any_instance_of(GatlingGun).to receive(:add_list)
+    allow_any_instance_of(GatlingGun).to receive(:add_email)
+    allow_any_instance_of(GatlingGun).to receive(:get_list).and_return(GatlingGun::Response.new({}))
+    allow_any_instance_of(GatlingGun).to receive(:delete_email)
   end
 
   describe ".initialize" do
@@ -24,7 +24,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
       let(:acceso) { { user: Faker::Internet.user_name, password: Faker::Lorem.words(3).join } }
 
       it "lo usa como acceso para SendGrid" do
-        GatlingGun.should_receive(:new).with(acceso[:user], acceso[:password]).and_call_original
+        expect(GatlingGun).to receive(:new).with(acceso[:user], acceso[:password]).and_call_original
 
         described_class.new(acceso)
       end
@@ -37,7 +37,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
         instancia = described_class.new(un_gatling_gun)
 
         conector_interno = instancia.send(:sendgrid)
-        conector_interno.should == un_gatling_gun
+        expect(conector_interno).to eq(un_gatling_gun)
       end
     end
 
@@ -46,7 +46,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
         usuario = Rails.application.secrets.sendgrid_user_name
         password = Rails.application.secrets.sendgrid_password
 
-        GatlingGun.should_receive(:new).with(usuario, password).and_call_original
+        expect(GatlingGun).to receive(:new).with(usuario, password).and_call_original
 
         described_class.new
       end
@@ -58,15 +58,15 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
 
       context "cuando la lista de suscriptores al suscribible no existe en SendGrid" do
         before do
-          GatlingGun.any_instance.stub(:get_list).with(nombre_lista).and_return do
+          allow_any_instance_of(GatlingGun).to receive(:get_list).with(nombre_lista).and_return do
             double("Response").tap do |response|
-              response.stub(:error?).and_return(true)
+              allow(response).to receive(:error?).and_return(true)
             end
           end
         end
 
         it "crea la lista" do
-          GatlingGun.any_instance.should_receive(:add_list).with(nombre_lista)
+          expect_any_instance_of(GatlingGun).to receive(:add_list).with(nombre_lista)
 
           subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
@@ -74,25 +74,25 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
 
       context "cuando la lista de suscriptores al suscribible ya existe en SendGrid" do
         before do
-          GatlingGun.any_instance.stub(:get_list).with(nombre_lista).and_return do
+          allow_any_instance_of(GatlingGun).to receive(:get_list).with(nombre_lista).and_return do
             double("Response").tap do |response|
-              response.stub(:error?).and_return(false)
+              allow(response).to receive(:error?).and_return(false)
             end
           end
         end
 
         it "no crea la lista" do
-          GatlingGun.any_instance.should_not_receive(:add_list).with(nombre_lista)
+          expect_any_instance_of(GatlingGun).not_to receive(:add_list).with(nombre_lista)
 
           subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
       end
 
       it "añade el suscriptor a la lista correspondiente de SendGrid" do
-        GatlingGun.any_instance.should_receive(:add_email) do |nombre_lista_recibido, suscriptor|
-          nombre_lista_recibido.should == nombre_lista
-          suscriptor[:email].should == suscripcion.email
-          suscriptor[:name].should == suscripcion.nombre_apellidos
+        expect_any_instance_of(GatlingGun).to receive(:add_email) do |nombre_lista_recibido, suscriptor|
+          expect(nombre_lista_recibido).to eq(nombre_lista)
+          expect(suscriptor[:email]).to eq(suscripcion.email)
+          expect(suscriptor[:name]).to eq(suscripcion.nombre_apellidos)
         end
 
         subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
@@ -101,9 +101,9 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
 
     context "al borrar una suscripcion" do
       it "borra el suscriptor de la lista correspondiente de SendGrid" do
-        GatlingGun.any_instance.should_receive(:delete_email) do |nombre_lista_recibido, email|
-          nombre_lista_recibido.should == nombre_lista
-          email.should == suscripcion.email
+        expect_any_instance_of(GatlingGun).to receive(:delete_email) do |nombre_lista_recibido, email|
+          expect(nombre_lista_recibido).to eq(nombre_lista)
+          expect(email).to eq(suscripcion.email)
         end
 
         subject.update(Suscribir::SuscripcionMediator::EVENTO_DESUSCRIBIR, suscripcion)
@@ -112,9 +112,9 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
 
     context "al hacer algo que no observamos" do
       it "no hace nada" do
-        GatlingGun.any_instance.should_not_receive(:add_list)
-        GatlingGun.any_instance.should_not_receive(:add_email)
-        GatlingGun.any_instance.should_not_receive(:delete_email)
+        expect_any_instance_of(GatlingGun).not_to receive(:add_list)
+        expect_any_instance_of(GatlingGun).not_to receive(:add_email)
+        expect_any_instance_of(GatlingGun).not_to receive(:delete_email)
 
         subject.update(:no_me_observes, suscripcion)
       end

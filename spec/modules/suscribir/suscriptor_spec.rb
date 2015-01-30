@@ -9,7 +9,7 @@ describe Suscribir::Suscriptor do
   describe "#busca_suscripcion" do
     context "sin ninguna suscripción" do
       it "debe devolver nil" do
-        subject.busca_suscripcion(suscribible, dominio_de_alta).should be_nil
+        expect(subject.busca_suscripcion(suscribible, dominio_de_alta)).to be_nil
       end
     end
 
@@ -17,23 +17,23 @@ describe Suscribir::Suscriptor do
       before { subject.suscripciones << Suscribir::Suscripcion.create(suscribible: suscribible, email: subject.email) }
 
       it "debe devolver una suscripcion" do
-        subject.busca_suscripcion(suscribible, dominio_de_alta).should_not be_nil
+        expect(subject.busca_suscripcion(suscribible, dominio_de_alta)).not_to be_nil
       end
     end
   end
 
   describe "#busca_suscripciones" do
+    before { 2.times { FactoryGirl.create(:suscripcion, suscriptor: subject, dominio_de_alta: dominio_de_alta) } }
+
     context "sin ninguna suscripción" do
       it "debe devolver vacío" do
-        subject.busca_suscripciones(dominio_de_alta).should be_empty
+        expect(subject.busca_suscripciones('cl')).to be_empty
       end
     end
 
     context "con dos suscripciones" do
-      before { 2.times { FactoryGirl.create(:suscripcion, suscriptor: subject, dominio_de_alta: dominio_de_alta) } }
-
       it "debe devolver dos suscripciones" do
-        subject.busca_suscripciones(dominio_de_alta).should have(2).suscripciones
+        expect(subject.busca_suscripciones(dominio_de_alta).size).to eq(2)
       end
     end
   end

@@ -17,3 +17,12 @@ gem 'psique', git: 'https://github.com/Soluciones/Psique.git'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+group :develoment, :test do
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'ffaker'
+  gem 'capybara'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'pry'
+  gem 'binding_of_caller'
+end
