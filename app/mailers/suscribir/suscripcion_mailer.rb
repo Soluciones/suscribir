@@ -1,6 +1,5 @@
 module Suscribir
   class SuscripcionMailer < ActionMailer::Base
-
     default from: ::Suscribir::Personalizacion.email_contacto, to: 'noreply@noreply.me.please'
 
     def desuscribir(suscripcion, url_resuscripcion)

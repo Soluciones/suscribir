@@ -17,7 +17,7 @@ module Suscribir
 
       scope :activas, -> { where(activo: true) }
     end
-    
+
     def token
       email_y_suscribible = "#{ email }#{ suscribible_type }#{ suscribible_id }"
       Digest::SHA1.hexdigest("#{ email_y_suscribible }#{ Rails.application.secrets.esta_web_secret_token }")
