@@ -4,7 +4,7 @@ require 'spec_helper'
 require 'rspec/rails'
 # require 'capybara/rspec'
 require 'database_cleaner'
-# require 'draper/test/rspec_integration'
+require 'draper/test/rspec_integration'
 # require 'email_spec'
 # require 'capybara/poltergeist'
 # require 'capybara/rails'
@@ -55,7 +55,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do |example|
-    Rails.cache.clear
+    # Rails.cache.clear
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
   end

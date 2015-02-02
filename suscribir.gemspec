@@ -20,12 +20,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'gatling_gun'
   s.add_dependency 'draper'
   s.add_dependency 'haml-rails'
-
   s.add_dependency 'rails-observers'
-
-  s.add_development_dependency 'rspec-rails', '~> 3.1'
-  s.add_development_dependency 'database_cleaner'
-  s.add_development_dependency 'pg'
-  s.add_development_dependency 'ffaker'
-  s.add_development_dependency 'factory_girl_rails'
 end
