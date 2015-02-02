@@ -89,23 +89,15 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
       end
 
       it "añade el suscriptor a la lista correspondiente de SendGrid" do
-        expect_any_instance_of(GatlingGun).to receive(:add_email) do |nombre_lista_recibido, suscriptor|
-          expect(nombre_lista_recibido).to eq(nombre_lista)
-          expect(suscriptor[:email]).to eq(suscripcion.email)
-          expect(suscriptor[:name]).to eq(suscripcion.nombre_apellidos)
-        end
-
+        expect_any_instance_of(GatlingGun).to receive(:add_email)
+          .with(nombre_lista, email: suscripcion.email, name: suscripcion.nombre_apellidos)
         subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
       end
     end
 
     context "al borrar una suscripcion" do
       it "borra el suscriptor de la lista correspondiente de SendGrid" do
-        expect_any_instance_of(GatlingGun).to receive(:delete_email) do |nombre_lista_recibido, email|
-          expect(nombre_lista_recibido).to eq(nombre_lista)
-          expect(email).to eq(suscripcion.email)
-        end
-
+        expect_any_instance_of(GatlingGun).to receive(:delete_email).with(nombre_lista, suscripcion.email)
         subject.update(Suscribir::SuscripcionMediator::EVENTO_DESUSCRIBIR, suscripcion)
       end
     end
