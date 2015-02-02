@@ -1,0 +1,13 @@
+= render 'web/columna'
+.l-desuscripciones
+  %section.panel
+    %header.panel-header.arrow
+      Nueva Suscripción
+    %section.panel-content
+      %h1 Ya casi hemos terminado tu proceso de nueva suscripción
+
+      %p
+        Para completarlo vamos a enviar un mail a la cuenta #{mail_to(@email, @email)} confirmando tu suscripción.
+      
+      %p
+        Si este mail no llegara a tu bandeja de entrada comprueba que no se encuentre en la bandeja de spam. Si tampoco estuviera en spam por favor ponte en contacto con nosotros a través del mail #{mail_to('info@rankia.com', 'info@rankia.com')}
