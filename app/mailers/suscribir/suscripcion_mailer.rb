@@ -1,7 +1,7 @@
 module Suscribir
   class SuscripcionMailer < ActionMailer::Base
 
-    default from: ConstantesEmail::REMITENTE_INFO, to: ConstantesEmail::NO_REPLY
+    default from: ::Suscribir::Personalizacion.email_contacto, to: 'noreply@noreply.me.please'
 
     def desuscribir(suscripcion, url_resuscripcion)
       @url_suscribirme_otra_vez = url_resuscripcion

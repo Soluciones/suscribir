@@ -5,7 +5,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
   let(:nombre_lista) { Faker::Lorem.sentence }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
-      allow(tematica).to receive(:nombre_lista).with(nombre_lista)
+      allow(tematica).to receive(:nombre_lista) { nombre_lista }
     end
   end
   let(:suscripcion) { FactoryGirl.build(:suscripcion, suscribible: suscribible) }
@@ -14,7 +14,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
     # Hacemos stub de todos los métodos para evitar llamadas reales a la API
     allow_any_instance_of(GatlingGun).to receive(:add_list)
     allow_any_instance_of(GatlingGun).to receive(:add_email)
-    allow_any_instance_of(GatlingGun).to receive(:get_list).and_return(GatlingGun::Response.new({}))
+    allow_any_instance_of(GatlingGun).to receive(:get_list) { GatlingGun::Response.new({}) }
     allow_any_instance_of(GatlingGun).to receive(:delete_email)
   end
 
@@ -57,55 +57,43 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
     context "al crear una suscripcion" do
 
       context "cuando la lista de suscriptores al suscribible no existe en SendGrid" do
+        let(:respuesta) { GatlingGun::Response.new({}) }
+
         before do
-          allow_any_instance_of(GatlingGun).to receive(:get_list).with(nombre_lista).and_return do
-            double("Response").tap do |response|
-              allow(response).to receive(:error?).and_return(true)
-            end
-          end
+          allow(respuesta).to receive(:error?) { true }
+          allow_any_instance_of(GatlingGun).to receive(:get_list).with(nombre_lista) { respuesta }
         end
 
         it "crea la lista" do
           expect_any_instance_of(GatlingGun).to receive(:add_list).with(nombre_lista)
-
           subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
       end
 
       context "cuando la lista de suscriptores al suscribible ya existe en SendGrid" do
+        let(:respuesta) { GatlingGun::Response.new({}) }
+
         before do
-          allow_any_instance_of(GatlingGun).to receive(:get_list).with(nombre_lista).and_return do
-            double("Response").tap do |response|
-              allow(response).to receive(:error?).and_return(false)
-            end
-          end
+          allow(respuesta).to receive(:error?) { false }
+          allow_any_instance_of(GatlingGun).to receive(:get_list).with(nombre_lista) { respuesta }
         end
 
         it "no crea la lista" do
           expect_any_instance_of(GatlingGun).not_to receive(:add_list).with(nombre_lista)
-
           subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
         end
       end
 
       it "añade el suscriptor a la lista correspondiente de SendGrid" do
-        expect_any_instance_of(GatlingGun).to receive(:add_email) do |nombre_lista_recibido, suscriptor|
-          expect(nombre_lista_recibido).to eq(nombre_lista)
-          expect(suscriptor[:email]).to eq(suscripcion.email)
-          expect(suscriptor[:name]).to eq(suscripcion.nombre_apellidos)
-        end
-
+        expect_any_instance_of(GatlingGun).to receive(:add_email)
+          .with(nombre_lista, email: suscripcion.email, name: suscripcion.nombre_apellidos)
         subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
       end
     end
 
     context "al borrar una suscripcion" do
       it "borra el suscriptor de la lista correspondiente de SendGrid" do
-        expect_any_instance_of(GatlingGun).to receive(:delete_email) do |nombre_lista_recibido, email|
-          expect(nombre_lista_recibido).to eq(nombre_lista)
-          expect(email).to eq(suscripcion.email)
-        end
-
+        expect_any_instance_of(GatlingGun).to receive(:delete_email).with(nombre_lista, suscripcion.email)
         subject.update(Suscribir::SuscripcionMediator::EVENTO_DESUSCRIBIR, suscripcion)
       end
     end
