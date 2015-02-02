@@ -5,7 +5,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
   let(:nombre_lista) { Faker::Lorem.sentence }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
-      allow(tematica).to receive(:nombre_lista).with(nombre_lista)
+      allow(tematica).to receive(:nombre_lista) { nombre_lista }
     end
   end
   let(:suscripcion) { FactoryGirl.build(:suscripcion, suscribible: suscribible) }
