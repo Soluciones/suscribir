@@ -14,9 +14,10 @@ module Suscribir
       email = Base64.decode64(params[:email])
       
       suscribible = clase.constantize.find(params[:suscribible_id])
-      return unless params[:token] == Suscripcion.new(email: email, suscribible_id: suscribible.id, suscribible_type: clase)
+      token_bueno = Suscripcion.new(email: email, suscribible_id: suscribible.id, suscribible_type: clase).token
+      return unless params[:token] == token_bueno
       
-      suscriptor = Usuario.find(email: email) || SuscriptorAnonimo.new(email: email)     
+      suscriptor = Usuario.find_by(email: email) || SuscriptorAnonimo.new(email: email)     
       suscriptor.suscribeme_a!(suscribible, I18n.locale)
     end
     
