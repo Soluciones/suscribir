@@ -17,8 +17,8 @@ module Suscribir
       token_bueno = Suscripcion.new(email: email, suscribible_id: suscribible.id, suscribible_type: clase).token
       return render_404 unless params[:token] == token_bueno
 
-      suscriptor = Usuario.find_by(email: email) || SuscriptorAnonimo.new(email: email)
-      suscriptor.suscribeme_a!(suscribible, I18n.locale)
+      suscriptor = Usuario.find_by(email: email) || SuscriptorAnonimo.new(email)
+      suscribible.suscribe_a!(suscriptor, I18n.locale)
     end
 
     def desuscribir

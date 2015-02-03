@@ -39,9 +39,31 @@ module Suscribir
         end
       end
 
-      it 'debe mostrar nuestro 404 si el token es incorrecto' do
-        get :baja_realizada, type: tematica_64, suscribible_id: tematica.id, email: email, token: 'incorrect_token'
-        expect(response.status).to eq(404)
+      describe 'resuscribir' do
+        it 'esperamos un 404 si el token no es correcto' do
+          get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: 'incorrect_token'
+          expect(response.status).to eq(404)
+        end
+
+        it 'esperamos que se cree una suscripcion con el email de un usuario registrado' do
+          usuario = create(:usuario, email: email)
+
+          token_bueno = Digest::SHA1.hexdigest(
+            "#{ usuario.email }#{ tematica.class }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
+
+          expect do
+            get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno
+          end.to change(Suscripcion, :count).by(1)
+        end
+
+        it 'esperamos que se cree una suscripcion con el email de un usuario anonimo' do
+          token_bueno = Digest::SHA1.hexdigest(
+            "#{ email }#{ tematica.class }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
+
+          expect do
+            get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno
+          end.to change(Suscripcion, :count).by(1)
+        end
       end
     end
   end
