@@ -4,4 +4,5 @@
 # (all these examples are active by default):
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'suscripcion', 'suscripciones'
+  inflect.irregular 'suscriptor', 'suscriptores'
 end
