@@ -32,8 +32,9 @@ module Suscribir::Suscribible
     "#{self.class.name} id: #{id}#{ " (#{nombre})" if respond_to?(:nombre) }"
   end
 
-  def suscripciones_a_notificar(opciones)
-    suscripciones.where.not(suscriptor_id: opciones[:excepto]).includes(:suscriptor)
+  def suscripciones_a_notificar(opciones = {})
+    todas = suscripciones.where.not(suscriptor_id: opciones[:excepto]).includes(:suscriptor).to_a
+    todas.delete_if { |suscripcion| suscripcion.suscriptor.respond_to?(:emailable?) && !suscripcion.suscriptor.emailable? }
   end
 
   def dame_datos_para_sendgrid(opciones = {})
