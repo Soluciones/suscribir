@@ -14,7 +14,7 @@ describe Suscribir::Suscribible do
     end
 
     context "con una suscripción" do
-      before { subject.suscripciones << Suscribir::Suscripcion.create(suscriptor: suscriptor, email: suscriptor.email) }
+      before { create(:suscripcion_con_suscriptor, suscriptor: suscriptor, suscribible: subject) }
 
       it "debe devolver una suscripcion" do
         expect(subject.busca_suscripcion(suscriptor, dominio_de_alta)).to be_present
