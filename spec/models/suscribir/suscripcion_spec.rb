@@ -177,7 +177,7 @@ describe Suscribir::Suscripcion do
 
           expect(described_class.desuscribir(email, suscripciones.map(&:suscribible), dominio_de_alta)).to be_present
 
-          suscripciones_encontradas = described_class.where(email: email, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.reload
           expect(suscripciones_encontradas).to be_empty
         end
       end
@@ -208,9 +208,10 @@ describe Suscribir::Suscripcion do
           suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
           expect(suscripciones_encontradas).to be_present
 
-          expect(described_class.desuscribir(suscriptor, suscripciones.map(&:suscribible), dominio_de_alta)).to be_present
+          suscribibles = suscripciones.map(&:suscribible)
+          expect(described_class.desuscribir(suscriptor, suscribibles, dominio_de_alta)).to be_present
 
-          suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.reload
           expect(suscripciones_encontradas).to be_empty
         end
       end
