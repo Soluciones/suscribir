@@ -7,6 +7,7 @@ module Suscribir::Suscribible
 
   included do
     has_many :suscripciones, as: :suscribible , class_name: 'Suscribir::Suscripcion'
+    has_many :suscriptores, through: :suscripciones, source_type: 'Usuario'
 
     delegate :activas, to: :suscripciones, prefix: true
   end
