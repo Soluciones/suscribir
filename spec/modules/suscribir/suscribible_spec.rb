@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Suscribir::Suscribible do
   subject { Tematica.create }
   let(:dominio_de_alta) { 'es' }
-  let(:suscriptor) { FactoryGirl.create(:usuario) }
+  let(:suscriptor) { create(:usuario) }
 
   describe 'suscripciones_a_notificar' do
     let!(:suscripcion) { create(:suscripcion_con_suscriptor, suscriptor: suscriptor, suscribible: subject) }
@@ -51,7 +51,7 @@ describe Suscribir::Suscribible do
     end
 
     context "con dos suscripciones" do
-      before { 2.times { FactoryGirl.create(:suscripcion, suscribible: subject, dominio_de_alta: dominio_de_alta) } }
+      before { 2.times { create(:suscripcion, suscribible: subject, dominio_de_alta: dominio_de_alta) } }
 
       it "debe devolver dos suscripciones" do
         expect(subject.busca_suscripciones(dominio_de_alta).size).to eq(2)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Suscribir::Suscriptor do
-  subject { FactoryGirl.create(:usuario) }
+  subject { create(:usuario) }
   let(:dominio_de_alta) { 'es' }
   let(:suscribible)  { Tematica.create }
 
@@ -23,7 +23,7 @@ describe Suscribir::Suscriptor do
   end
 
   describe "#busca_suscripciones" do
-    before { 2.times { FactoryGirl.create(:suscripcion, suscriptor: subject, dominio_de_alta: dominio_de_alta) } }
+    before { 2.times { create(:suscripcion, suscriptor: subject, dominio_de_alta: dominio_de_alta) } }
 
     context "sin ninguna suscripción" do
       it "debe devolver vacío" do

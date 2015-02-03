@@ -34,7 +34,9 @@ module Suscribir::Suscribible
 
   def suscripciones_a_notificar(opciones = {})
     todas = suscripciones.where.not(suscriptor_id: opciones[:excepto]).includes(:suscriptor).to_a
-    todas.delete_if { |suscripcion| suscripcion.suscriptor.respond_to?(:emailable?) && !suscripcion.suscriptor.emailable? }
+    todas.delete_if do |suscripcion|
+      suscripcion.suscriptor.respond_to?(:emailable?) && !suscripcion.suscriptor.emailable?
+    end
   end
 
   def dame_datos_para_sendgrid(opciones = {})

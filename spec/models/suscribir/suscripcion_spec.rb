@@ -27,7 +27,7 @@ describe Suscribir::Suscripcion do
 
     shared_examples "suscripcion multiple" do
       context "pasando un array de suscribibles" do
-        let(:suscribibles) { FactoryGirl.create_list(:tematica, 3) }
+        let(:suscribibles) { create_list(:tematica, 3) }
 
         it "crea multiples suscripciones" do
           described_class.suscribir(suscriptor, suscribibles, dominio_de_alta)
@@ -35,7 +35,7 @@ describe Suscribir::Suscripcion do
           suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
 
           expect(suscripciones_encontradas.map(&:suscribible_id)).to match_array(suscribibles.map(&:id))
-          expect(suscripciones_encontradas.all?{ |s| s.email == suscriptor.email }).to be_truthy
+          expect(suscripciones_encontradas.all? { |s| s.email == suscriptor.email }).to be_truthy
         end
 
         it "devuelve las suscripciones creadas" do
@@ -48,7 +48,7 @@ describe Suscribir::Suscripcion do
       end
 
       context "pasando un array de suscriptores" do
-        let(:suscriptores) { FactoryGirl.create_list(:usuario, 3) }
+        let(:suscriptores) { create_list(:usuario, 3) }
 
         it "crea multiples suscripciones" do
           described_class.suscribir(suscriptores, suscribible, dominio_de_alta)
@@ -56,7 +56,7 @@ describe Suscribir::Suscripcion do
           suscripciones_encontradas = described_class.where(suscribible_id: suscribible, suscribible_type: suscribible.class.name, dominio_de_alta: dominio_de_alta)
 
           expect(suscripciones_encontradas.map(&:email)).to match_array(suscriptores.map(&:email))
-          expect(suscripciones_encontradas.all?{ |s| s.suscribible_id == suscribible.id }).to be_truthy
+          expect(suscripciones_encontradas.all? { |s| s.suscribible_id == suscribible.id }).to be_truthy
         end
 
         it "devuelve las suscripciones creadas" do
@@ -69,7 +69,7 @@ describe Suscribir::Suscripcion do
       end
 
       context "intentando crear una suscripcion duplicada" do
-        let!(:suscripcion_existente) { FactoryGirl.create(:suscripcion_con_suscriptor) }
+        let!(:suscripcion_existente) { create(:suscripcion_con_suscriptor) }
 
         it "devuleve la suscripción original" do
           suscripcion_devuleta = described_class.suscribir(suscripcion_existente.suscriptor, suscripcion_existente.suscribible, suscripcion_existente.dominio_de_alta)
@@ -79,7 +79,7 @@ describe Suscribir::Suscripcion do
     end
 
     context "para un suscriptor persistido (p.ej.: Usuario)" do
-      let(:suscriptor) { FactoryGirl.create(:usuario) }
+      let(:suscriptor) { create(:usuario) }
 
       it_behaves_like "suscripcion copiando datos"
       it_behaves_like "suscripcion multiple"
@@ -94,7 +94,7 @@ describe Suscribir::Suscripcion do
     end
 
     context "para un suscriptor no persistido o anónimo" do
-      let(:suscriptor) { FactoryGirl.build(:suscriptor_anonimo) }
+      let(:suscriptor) { build(:suscriptor_anonimo) }
 
       it_behaves_like "suscripcion copiando datos"
       it_behaves_like "suscripcion multiple"
@@ -109,37 +109,39 @@ describe Suscribir::Suscripcion do
 
   describe ".busca_suscripcion" do
     context "con una suscripción" do
-      let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
+      let!(:suscripcion) { create(:suscripcion) }
 
       context "pasando un email" do
         it "encuentra la suscripción a partir del email, suscribible y dominio" do
-          expect(described_class.busca_suscripcion(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
+          params = suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta
+          expect(described_class.busca_suscripcion(*params)).to be_present
         end
       end
 
       context "pasando un suscriptor" do
-        let!(:suscripcion) { FactoryGirl.create(:suscripcion_con_suscriptor) }
+        let!(:suscripcion) { create(:suscripcion_con_suscriptor) }
 
         it "encuentra la suscripción a partir del suscriptor, suscribible y dominio" do
-          expect(described_class.busca_suscripcion(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
+          params = suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta
+          expect(described_class.busca_suscripcion(*params)).to be_present
         end
       end
     end
   end
 
   describe ".busca_suscripciones" do
-    let!(:suscripciones) { FactoryGirl.create_list(:suscripcion, 2, email: suscriptor.email, dominio_de_alta: dominio_de_alta) }
+    let!(:suscripciones) { create_list(:suscripcion, 2, email: suscriptor.email, dominio_de_alta: dominio_de_alta) }
 
     context "con dos suscripciones del mismo suscriptor" do
       context "pasando un email y un dominio" do
-        let(:suscriptor) { FactoryGirl.build(:suscriptor_anonimo) }
+        let(:suscriptor) { build(:suscriptor_anonimo) }
         it "encuentra las suscripciones" do
           expect(described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).size).to eq(2)
         end
       end
 
       context "pasando un suscriptor y un dominio" do
-        let(:suscriptor) { FactoryGirl.create(:usuario) }
+        let(:suscriptor) { create(:usuario) }
         it "encuentra las suscripciones" do
           expect(described_class.busca_suscripciones(suscriptor.email, dominio_de_alta).size).to eq(2)
         end
@@ -150,21 +152,24 @@ describe Suscribir::Suscripcion do
   describe ".desuscribir" do
     context "pasando un email" do
       context "con una suscripción" do
-        let!(:suscripcion) { FactoryGirl.create(:suscripcion) }
+        let!(:suscripcion) { create(:suscripcion) }
+        let(:suscribible) { suscripcion.suscribible }
+
         it "elimina la suscripción a partir del email, suscribible y dominio" do
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(email: suscripcion.email, dominio_de_alta: dominio_de_alta)
+            .where(suscribible_id: suscribible.id, suscribible_type: suscribible.class.name)
           expect(suscripciones_encontradas).to be_present
 
-          expect(described_class.desuscribir(suscripcion.email, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
+          expect(described_class.desuscribir(suscripcion.email, suscribible, suscripcion.dominio_de_alta)).to be_present
 
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.reload
           expect(suscripciones_encontradas).to be_empty
         end
       end
 
       context "con varias suscripciones" do
         let(:email) { Faker::Internet.email }
-        let!(:suscripciones) { FactoryGirl.create_list(:suscripcion, 3, email: email, dominio_de_alta: dominio_de_alta) }
+        let!(:suscripciones) { create_list(:suscripcion, 3, email: email, dominio_de_alta: dominio_de_alta) }
 
         it "elimina las suscripciones a partir del email, suscribible y dominio" do
           suscripciones_encontradas = described_class.where(email: email, dominio_de_alta: dominio_de_alta)
@@ -180,22 +185,24 @@ describe Suscribir::Suscripcion do
 
     context "pasando un suscriptor" do
       context "con una suscripción" do
-        let!(:suscripcion) { FactoryGirl.create(:suscripcion_con_suscriptor) }
+        let!(:suscripcion) { create(:suscripcion_con_suscriptor) }
+        let(:suscribible) { suscripcion.suscribible }
 
         it "elimina la suscripción a partir del suscriptor, suscribible y dominio" do
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas = described_class.where(email: suscripcion.email, dominio_de_alta: dominio_de_alta)
+            .where(suscribible_id: suscribible.id, suscribible_type: suscribible.class.name)
           expect(suscripciones_encontradas).to be_present
 
-          expect(described_class.desuscribir(suscripcion.suscriptor, suscripcion.suscribible, suscripcion.dominio_de_alta)).to be_present
+          expect(described_class.desuscribir(suscripcion.suscriptor, suscribible, dominio_de_alta)).to be_present
 
-          suscripciones_encontradas = described_class.where(email: suscripcion.email, suscribible_id: suscripcion.suscribible.id, suscribible_type: suscripcion.suscribible.class.name, dominio_de_alta: dominio_de_alta)
+          suscripciones_encontradas.reload
           expect(suscripciones_encontradas).to be_empty
         end
       end
 
       context "con varias suscripciones" do
-        let(:suscriptor) { FactoryGirl.create(:usuario) }
-        let!(:suscripciones) { FactoryGirl.create_list(:suscripcion_con_suscriptor, 3, suscriptor: suscriptor, dominio_de_alta: dominio_de_alta) }
+        let(:suscriptor) { create(:usuario) }
+        let!(:suscripciones) { create_list(:suscripcion_con_suscriptor, 3, suscriptor: suscriptor) }
 
         it "elimina las suscripciones a partir del email, suscribible y dominio" do
           suscripciones_encontradas = described_class.where(email: suscriptor.email, dominio_de_alta: dominio_de_alta)
@@ -211,7 +218,7 @@ describe Suscribir::Suscripcion do
   end
 
   describe "#nombre_lista" do
-    subject { FactoryGirl.create(:suscripcion) }
+    subject { create(:suscripcion) }
 
     it "delega el método a su suscribible" do
       expect(subject.nombre_lista).to eq(subject.suscribible.nombre_lista)

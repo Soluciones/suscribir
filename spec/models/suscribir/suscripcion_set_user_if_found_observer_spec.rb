@@ -7,7 +7,7 @@ describe Suscribir::SuscripcionSetUserIfFoundObserver do
       allow(tematica).to receive(:nombre).and_return(Faker::Lorem.sentence)
     end
   end
-  let(:suscripcion) { FactoryGirl.build(:suscripcion, suscribible: suscribible) }
+  let(:suscripcion) { build(:suscripcion, suscribible: suscribible) }
 
   describe "#update" do
     def no_hace_nada

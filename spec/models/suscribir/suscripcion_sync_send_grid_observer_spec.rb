@@ -8,7 +8,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
       allow(tematica).to receive(:nombre_lista) { nombre_lista }
     end
   end
-  let(:suscripcion) { FactoryGirl.build(:suscripcion, suscribible: suscribible) }
+  let(:suscripcion) { build(:suscripcion, suscribible: suscribible) }
 
   before(:each) do
     # Hacemos stub de todos los métodos para evitar llamadas reales a la API
