@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  def pon_lateral
 
+  def pon_lateral
   end
 
   def render_404
