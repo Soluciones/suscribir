@@ -5,6 +5,27 @@ describe Suscribir::Suscribible do
   let(:dominio_de_alta) { 'es' }
   let(:suscriptor) { FactoryGirl.create(:usuario) }
 
+  describe 'suscripciones_a_notificar' do
+    let!(:suscripcion) { create(:suscripcion_con_suscriptor, suscriptor: suscriptor, suscribible: subject) }
+
+    it 'devuelve las suscripciones a un suscribible' do
+      expect(subject.suscripciones_a_notificar).to eq([suscripcion])
+    end
+
+    it 'permite excluir ciertos id de usuario' do
+      expect(subject.suscripciones_a_notificar(excepto: suscriptor.id)).to eq([])
+    end
+
+    it 'no devuelve suscripciones de usuarios baneados' do
+      allow_any_instance_of(Usuario).to receive(:emailable?).and_return(false)
+      expect(subject.suscripciones_a_notificar).to eq([])
+    end
+
+    it 'devuelve suscripciones de usuarios no suscritos a alertas del foro' do
+      allow_any_instance_of(Usuario).to receive(:foro_alertas).and_return(false)
+      expect(subject.suscripciones_a_notificar).to eq([suscripcion])
+    end
+  end
 
   describe "#busca_suscripcion" do
     context "sin ninguna suscripción" do
