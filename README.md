@@ -40,7 +40,7 @@ En la línea de comandos, desde el directorio del engine:
 
 Una vez esta creado el _tag_ de la nueva versión, vamos a las aplicaciones principales y editamos la línea del Gemfile:
 
-    gem 'suscribir', git: 'git@github.com:Soluciones/suscribir.git', branch: 'master', tag: '6.0.0'
+    gem 'suscribir', git: "https://github.com/Soluciones/suscribir.git", tag: '6.0.0'
 
 
 Y lanzamos `bundle update --source suscribir` para que actualice a la nueva versión.
