@@ -50,4 +50,8 @@ module Suscribir::Suscribible
     end
     datos
   end
+
+  def nombre_suscripcion
+    try(:nombre) || try(:titulo)
+  end
 end
