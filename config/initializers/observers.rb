@@ -1,6 +1,4 @@
-# coding: UTF-8
-
-unless Rails.env.test?
+if Rails.env.production?
   Suscribir::SuscripcionMediator.add_observer Suscribir::SuscripcionSyncSendGridObserver.new
   Suscribir::SuscripcionMediator.add_observer Suscribir::SuscripcionSetUserIfFoundObserver.new
 end
