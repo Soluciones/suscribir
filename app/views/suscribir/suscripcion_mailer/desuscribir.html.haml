@@ -10,4 +10,5 @@
 
       %p
         Para cuaquier duda o comentario por favor ponte en contacto con
-        = link_to 'info@rankia.com', 'mailto:info@rankia.com'
+        - email = ::Suscribir::Personalizacion.email_contacto_en_confirmacion_baja
+        = link_to email, "mailto:#{ email }"

@@ -7,6 +7,6 @@ require 'gatling_gun'
 
 module Suscribir
   module Personalizacion
-    mattr_accessor :layout, :email_contacto
+    mattr_accessor :layout, :email_contacto, :email_contacto_en_confirmacion_baja
   end
 end
