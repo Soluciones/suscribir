@@ -20,7 +20,7 @@ Permite suscribirse a cualquier cosa suscribible (tematicas, hilos, news general
 Cuando el cambio ya está _mergeado_ en `master`, es hora de incrementar el contador de versiones para hacer la subida. En `lib/suscribir/version.rb`:
 
     module Suscribir
-      VERSION = "0.5.1"
+      VERSION = "6.0.0"
     end
 
 ### Escribir changelog

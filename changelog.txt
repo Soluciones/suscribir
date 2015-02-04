@@ -1,3 +1,8 @@
+[6.0.0] Added Psique
+        Updated to RSPEC 3
+        Brougth unsubscribe code, previously on the main app
+        Added new unsubscribe & suscribe me again logic
+        Added a Personalizacion module to customize configuration from the main app
 [5.0.1] Fix a bug caused because the method response.success? doesn't exist on GatlingGun
 [5.0.0] Upgraded to Rails 4.1
 [4.0.0] Upgraded to Rails 4.0
