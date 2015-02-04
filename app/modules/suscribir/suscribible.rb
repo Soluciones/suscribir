@@ -7,6 +7,7 @@ module Suscribir::Suscribible
 
   included do
     has_many :suscripciones, as: :suscribible , class_name: 'Suscribir::Suscripcion'
+    has_many :suscriptores, through: :suscripciones, source_type: 'Usuario'
 
     delegate :activas, to: :suscripciones, prefix: true
   end
@@ -29,5 +30,28 @@ module Suscribir::Suscribible
 
   def nombre_lista
     "#{self.class.name} id: #{id}#{ " (#{nombre})" if respond_to?(:nombre) }"
+  end
+
+  def suscripciones_a_notificar(opciones = {})
+    todas = suscripciones.where.not(suscriptor_id: opciones[:excepto]).includes(:suscriptor).to_a
+    todas.delete_if do |suscripcion|
+      suscripcion.suscriptor.respond_to?(:emailable?) && !suscripcion.suscriptor.emailable?
+    end
+  end
+
+  def dame_datos_para_sendgrid(opciones = {})
+    datos = { emails: [], nombre: [], enlace_perfil_url: [], enlace_baja: [] }
+    suscripciones_a_notificar(opciones).each do |suscripcion|
+      datos[:emails] << suscripcion.email
+      datos[:nombre] << suscripcion.nombre_apellidos
+      usuario = suscripcion.suscriptor.try(:decorado)
+      datos[:enlace_perfil_url] << usuario.try(:enlace_perfil_url, 'Actualiza tu perfil')
+      datos[:enlace_baja] << suscripcion.decorate.enlace_desuscripcion_url('Desuscribirme de esta alerta')
+    end
+    datos
+  end
+
+  def nombre_suscripcion
+    try(:nombre) || try(:titulo)
   end
 end

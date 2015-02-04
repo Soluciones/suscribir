@@ -1,0 +1,14 @@
+.l-desuscripciones{style: 'background-color: #fff;min-width:340px;max-width:768px;margin: 0 auto;align: center;'}
+  .panel
+    .panel-header.arrow{style: 'padding: 0.4rem;background-color: #afc6d4;color: #fff;font-size: 1.2em;font-weight: bold;'}
+      Confirmacion baja de la newsletter
+    .panel-content{style: 'padding: 0.4rem;background-color: #f4f4f6;border: 1px solid #ccc;border-top: 0;'}
+      %h1 Hemos eliminado tu e-mail de nuestra lista de suscriptores
+      %p ¿Ha podido ser un error? Puede ser que no quisieras darte de baja de nuestra suscripción o que algún amigo al que has enviado este mail te haya dado de baja equivocadamente. Si es así puedes volver a suscribirte.
+
+      = link_to('SUSCRIBIRME', @url_suscribirme_otra_vez, style: 'text-decoration:none;display: block;font-size: 1.2em;margin-top: 2em;width: 250px; margin:0 auto;align:center;text-align:center;background-size: 100%;background-image: linear-gradient(rgb(75, 156, 217), rgb(33, 104, 157));-webkit-box-shadow: rgba(255, 255, 255, 0.14902) 0px -1px 0px 0px inset;box-shadow: rgba(255, 255, 255, 0.14902) 0px -1px 0px 0px inset;border: 1px solid rgb(24, 76, 115);border-image-source: initial;border-image-slice: initial;border-image-width: initial;border-image-outset: initial;border-image-repeat: initial;color: white;padding: 6px 25px;font-family: Roboto, sans-serif;font-weight: 600;border-radius: 4px;text-align: center;cursor: pointer;')
+
+      %p
+        Para cuaquier duda o comentario por favor ponte en contacto con
+        - email = ::Suscribir::Personalizacion.email_contacto_en_confirmacion_baja
+        = link_to email, "mailto:#{ email }"

@@ -1,20 +1,18 @@
-# coding: UTF-8
-
-require "spec_helper"
+require 'rails_helper'
 
 describe Suscribir::SuscripcionSetUserIfFoundObserver do
   subject { described_class.new }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
-      tematica.stub(:nombre).and_return(Faker::Lorem.sentence)
+      allow(tematica).to receive(:nombre).and_return(Faker::Lorem.sentence)
     end
   end
-  let(:suscripcion) { FactoryGirl.build(:suscripcion, suscribible: suscribible) }
+  let(:suscripcion) { build(:suscripcion, suscribible: suscribible) }
 
   describe "#update" do
     def no_hace_nada
-      suscripcion.suscriptor_id.should be_nil
-      suscripcion.suscriptor_type.should be_nil
+      expect(suscripcion.suscriptor_id).to be_nil
+      expect(suscripcion.suscriptor_type).to be_nil
     end
 
     context "al crear una suscripcion" do
@@ -23,9 +21,8 @@ describe Suscribir::SuscripcionSetUserIfFoundObserver do
 
         it "le asigna el usuario a la suscripción" do
           subject.update(Suscribir::SuscripcionMediator::EVENTO_SUSCRIBIR, suscripcion)
-
-          suscripcion.suscriptor_id.should == usuario.id
-          suscripcion.suscriptor_type.should == usuario.class.name
+          expect(suscripcion.suscriptor_id).to eq(usuario.id)
+          expect(suscripcion.suscriptor_type).to eq(usuario.class.name)
         end
       end
 
