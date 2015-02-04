@@ -13,12 +13,13 @@ module Suscribir
       clase = Base64.decode64(params[:type])
       email = Base64.decode64(params[:email])
 
-      suscribible = clase.constantize.find(params[:suscribible_id])
-      token_bueno = Suscripcion.new(email: email, suscribible_id: suscribible.id, suscribible_type: clase).token
+      @suscribible = clase.constantize.find(params[:suscribible_id])
+      token_bueno = Suscripcion.new(email: email, suscribible_id: @suscribible.id, suscribible_type: clase).token
       return render_404 unless params[:token] == token_bueno
 
       suscriptor = Usuario.find_by(email: email) || SuscriptorAnonimo.new(email)
-      suscribible.suscribe_a!(suscriptor, I18n.locale)
+      @suscribible.suscribe_a!(suscriptor, I18n.locale)
+      SuscripcionMailer.resuscribir(suscriptor, @suscribible).deliver
     end
 
     def desuscribir
