@@ -1,3 +1,4 @@
+[6.0.1] We shouldn't link to usuario#perfil, but to usuario#editar
 [6.0.0] Added Psique
         Updated to RSPEC 3
         Brougth unsubscribe code, previously on the main app
