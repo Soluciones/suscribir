@@ -40,12 +40,12 @@ module Suscribir::Suscribible
   end
 
   def dame_datos_para_sendgrid(opciones = {})
-    datos = { emails: [], nombre: [], enlace_perfil_url: [], enlace_baja: [] }
+    datos = { emails: [], nombre: [], enlace_editar_perfil_url: [], enlace_baja: [] }
     suscripciones_a_notificar(opciones).each do |suscripcion|
       datos[:emails] << suscripcion.email
       datos[:nombre] << suscripcion.nombre_apellidos
       usuario = suscripcion.suscriptor.try(:decorado)
-      datos[:enlace_perfil_url] << usuario.try(:enlace_perfil_url, 'Actualiza tu perfil')
+      datos[:enlace_editar_perfil_url] << usuario.try(:enlace_editar_perfil_url)
       datos[:enlace_baja] << suscripcion.decorate.enlace_desuscripcion_url('Desuscribirme de esta alerta')
     end
     datos
