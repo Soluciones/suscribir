@@ -21,15 +21,17 @@ module Suscribir
     end
 
     context 'con una tematica, su equivalente en Base64 y un email tambien en Base64' do
+      let(:suscripcion) { create(:suscripcion_con_suscriptor) }
       let(:tematica) { create(:tematica) }
+      let(:clase) { tematica.class }
       let(:tematica_64) { Base64.encode64(tematica.class.to_s) }
-      let(:email) { Faker::Internet.email }
+      let(:email) { suscripcion.email }
       let(:email_64) { Base64.encode64(email) }
 
       describe 'baja_realizada' do
         it 'debe mostrar la pagina si el token es correcto' do
-          email_tokenizada = tokeniza_email(email_64)
-          get :baja_realizada, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: email_tokenizada
+          token_bueno = Suscripcion.new(email: email, suscribible_id: tematica.id, suscribible_type: clase).token
+          get :baja_realizada, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno
           expect(response).to be_ok
         end
 
