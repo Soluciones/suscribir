@@ -23,6 +23,7 @@ group :develoment, :test do
   gem 'factory_girl_rails'
   gem 'ffaker'
   gem 'capybara'
+  gem 'launchy'
   gem 'rspec-rails', '~> 3.0'
   gem 'pry'
   gem 'binding_of_caller'
