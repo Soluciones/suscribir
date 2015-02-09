@@ -1,8 +1,8 @@
-= render 'web/columna'
+=# render 'web/columna'
 .center
   %p.alerta
-    ¡Atención!  Estás a punto de cancelar tu suscripción a la newsletter de
-    %b= @suscripcion.tematica.nombre
+    ¡Atención!  Estás a punto de cancelar tu suscripción a
+    %b= @suscripcion.suscribible.nombre_suscripcion
     %br
     ¿Estás seguro de que quieres hacerlo?
     = form_for @suscripcion, url: desuscribir_path(@suscripcion.id, params[:token]), html: { method: :delete, class: 'form-baja' } do |f|
