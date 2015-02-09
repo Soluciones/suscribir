@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140704103922) do
+ActiveRecord::Schema.define(version: 20150209111243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20140704103922) do
   add_index "suscribir_suscripciones", ["suscriptor_type", "suscriptor_id", "activo"], name: "ix_suscripciones_on_suscriptor_and_activo", using: :btree
 
   create_table "tematicas", force: true do |t|
+    t.string   "nombre"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
