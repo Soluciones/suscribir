@@ -9,7 +9,6 @@ describe 'desuscribir' do
     let!(:token) { suscripcion.token }
     let(:url) { "http://www.example.com/suscribir/resuscribir/#{ tipo }/#{ suscribible.id }/#{ email }/#{ token }" }
 
-
     it 'muestra el enlace de desuscribir' do
       visit "/suscribir/confirmar_baja/#{ suscripcion.id }/#{ suscripcion.token }"
       expect(page.status_code).to be(200)
