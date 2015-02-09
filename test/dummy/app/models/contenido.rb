@@ -1,3 +1,3 @@
-class Tematica < ActiveRecord::Base
+class Contenido < ActiveRecord::Base
   include Suscribir::Suscribible
 end

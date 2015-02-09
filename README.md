@@ -5,6 +5,37 @@ suscribir
 
 Permite suscribirse a cualquier cosa suscribible (tematicas, hilos, news general... ¿etiquetas, usuarios?)
 
+## Migraciones
+
+Una migración no funciona si se lanza en el root del engine:
+
+    > rails g migration add_suscribir_id_to_redirections suscribir_id:integer
+
+    => script/rails:8:in 'require': cannot load such file -- rails/engine/commands (LoadError)
+    => from script/rails:8:in 'main>'
+
+Hay que lanzarla en dummy:
+
+    > cd test/dummy
+    > rails g migration add_suscribir_id_to_redirections suscribir_id:integer
+
+    => invoke  active_record
+    => create    db/migrate/20130626151549_add_suscribir_id_to_redirections.rb
+
+    > mv db/migrate/20130626151549_add_suscribir_id_to_redirections.rb ../../db/migrate/
+    > rake db:migrate
+
+
+Luego, habrá que importar las migraciones a la app principal que vaya a usar el engine:
+
+    > rnk
+    > rake suscribir:install:migrations
+    > rdbp
+
+
+**OJO:** Si tenemos el *database.yml* apuntando a la misma BD (que no deberíamos), el `rake db:migrate` de la app fallará porque "el campo ya existe", habrá que ajustarlo a mano... **FAIL**.
+
+
 ### Configurar para que use la working copy local
 
     > bundle config local.suscribir ../suscribir

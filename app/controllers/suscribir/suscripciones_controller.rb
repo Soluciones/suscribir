@@ -26,22 +26,22 @@ module Suscribir
       suscripcion = Suscribir::Suscripcion.find(params[:suscripcion_id])
       params[:token] == suscripcion.token or return render_404
       encoded_email = Base64.encode64(suscripcion.email)
-      email_tokenizada = tokeniza_email(encoded_email)
       clase = Base64.encode64(suscripcion.suscribible_type)
-      url_resuscripcion = resuscribir_url(clase, suscripcion.suscribible_id, encoded_email, email_tokenizada)
+      token_bueno = suscripcion.token
+      url_resuscripcion = resuscribir_url(clase, suscripcion.suscribible_id, encoded_email, token_bueno)
 
       suscripcion.destroy
       SuscripcionMailer.desuscribir(suscripcion, url_resuscripcion).deliver
       redirect_to baja_realizada_path(type: clase, suscribible_id: suscripcion.suscribible_id,
-                                      email: encoded_email, token: email_tokenizada)
+                                      email: encoded_email, token: token_bueno)
     end
 
     def baja_realizada
       clase = Base64.decode64(params[:type]).constantize
       @suscribible = clase.find(params[:suscribible_id])
-      email_tokenizada = tokeniza_email(params[:email])
-      params[:token] == email_tokenizada or return render_404
       @email = Base64.decode64(params[:email])
+      token_bueno = Suscripcion.new(email: @email, suscribible_id: @suscribible.id, suscribible_type: clase).token
+      params[:token] == token_bueno or return render_404
 
       @url_resuscripcion = resuscribir_url(params[:type], params[:suscribible_id], params[:email], params[:token])
     end

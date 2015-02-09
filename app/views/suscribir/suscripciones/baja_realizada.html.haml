@@ -1,4 +1,4 @@
-= render 'web/columna'
+= render 'columna'
 .l-desuscripciones
   %section.panel
     %header.panel-header.arrow
@@ -7,8 +7,8 @@
       %h1 Has sido dado de baja de la suscripción
 
       %p
-        Desde este momento no recibirás más emails con la información de la
-        %b #{ @suscribible.class.model_name.human} de #{ @suscribible.nombre }.
+        Desde este momento no recibirás más emails con la información de
+        %b #{ @suscribible.nombre_suscripcion }.
 
       %p Recibirás un último e-mail confirmando tu desuscripción
 
