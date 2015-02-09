@@ -33,7 +33,7 @@ describe 'desuscribir' do
       suscribible.reload
       expect(suscribible.suscripciones.count).to eq(1)
       expect(page).to have_css('h1', 'Bienvenido de nuevo')
-      
+
       contador_enviados = ActionMailer::Base.deliveries.count
       visit url.gsub("\n", "%0A")
       expect(ActionMailer::Base.deliveries.count).to eq contador_enviados
