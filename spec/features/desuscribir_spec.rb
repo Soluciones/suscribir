@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'desuscribir' do
   context 'con una suscripción ya existente' do
-    let(:suscribible) { create(:tematica) }
+    let(:suscribible) { create(:contenido) }
     let(:suscripcion) { create(:suscripcion, suscribible: suscribible, suscriptor: build_stubbed(:usuario)) }
 
     it 'muestra el enlace de desuscribir' do
