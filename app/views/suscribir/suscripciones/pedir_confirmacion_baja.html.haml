@@ -6,4 +6,4 @@
     %br
     ¿Estás seguro de que quieres hacerlo?
     = form_for @suscripcion, url: desuscribir_path(@suscripcion.id, params[:token]), html: { method: :delete, class: 'form-baja' } do |f|
-      = f.submit "Sí, quiero cancelar mi suscripción", class: 'boton_rojo'
+      = f.submit 'Sí, quiero cancelar mi suscripción', class: 'boton_rojo'
