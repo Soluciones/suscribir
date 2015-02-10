@@ -12,8 +12,11 @@ module Suscribir
     def resuscribir
       clase = Base64.decode64(params[:type])
       email = Base64.decode64(params[:email])
-
       @suscribible = clase.constantize.find(params[:suscribible_id])
+
+      ya_suscrito = @suscribible.suscripciones.find_by(email: email)
+      return if ya_suscrito
+
       token_bueno = Suscripcion.new(email: email, suscribible_id: @suscribible.id, suscribible_type: clase).token
       return render_404 unless params[:token] == token_bueno
 

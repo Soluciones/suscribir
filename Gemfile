@@ -28,3 +28,7 @@ group :develoment, :test do
   gem 'pry'
   gem 'binding_of_caller'
 end
+
+group :test do
+  gem 'email_spec'
+end
