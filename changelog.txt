@@ -1,3 +1,4 @@
+[6.0.3] Preventing confirmation emails being sent again and again
 [6.0.2] Fixed bugs when a suscribible isn't a Tematica
         Improved test coverage with Capybara integration tests
 [6.0.1] We shouldn't link to usuario#perfil, but to usuario#editar
