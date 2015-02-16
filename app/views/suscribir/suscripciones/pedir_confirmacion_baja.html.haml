@@ -1,9 +1,14 @@
 = render 'columna'
-.center
-  %p.alerta
-    ¡Atención!  Estás a punto de cancelar tu suscripción a
-    %b= @suscripcion.suscribible.nombre_suscripcion
-    %br
-    ¿Estás seguro de que quieres hacerlo?
-    = form_for @suscripcion, url: desuscribir_path(@suscripcion.id, params[:token]), html: { method: :delete, class: 'form-baja' } do |f|
-      = f.submit 'Sí, quiero cancelar mi suscripción', class: 'boton_rojo'
+.l-desuscripciones.confirmacion
+  %section.panel
+    %header.panel-header.arrow
+      Desuscripción
+    %section.panel-content
+      %i.fa.fa-exclamation-triangle
+      %h3
+        ¡Atención!  Estás a punto de cancelar tu suscripción a
+        = @suscripcion.suscribible.nombre_suscripcion.downcase
+
+      %h4 ¿Estás seguro de que quieres hacerlo?
+      = form_for @suscripcion, url: desuscribir_path(@suscripcion.id, params[:token]), html: { method: :delete, class: 'form-baja' } do |f|
+        = f.submit 'Sí, quiero cancelar mi suscripción', class: 'btn large red'
