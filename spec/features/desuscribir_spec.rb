@@ -1,10 +1,18 @@
 require 'rails_helper'
+require 'temping'
+
+Temping.create :mi_suscribible do
+  include Suscribir::Suscribible
+  with_columns do |t|
+    t.string(:titulo)
+  end
+end
 
 describe 'desuscribir' do
   context 'con una suscripción ya existente' do
-    let(:suscribible) { create(:contenido) }
+    let(:suscribible) { MiSuscribible.create!(titulo: 'Foo') }
     let(:suscripcion) { create(:suscripcion_con_suscriptor, suscribible: suscribible) }
-    let(:tipo) { Base64.encode64('Contenido') }
+    let(:tipo) { Base64.encode64('MiSuscribible') }
     let(:email) { Base64.encode64(suscripcion.email) }
     let!(:token) { suscripcion.token }
     let(:url) { "http://www.example.com/suscribir/resuscribir/#{ tipo }/#{ suscribible.id }/#{ email }/#{ token }" }
