@@ -1,3 +1,4 @@
+[6.0.4] Test with temping, Contenido isn't needed anymore
 [6.0.3] Preventing confirmation emails being sent again and again
 [6.0.2] Fixed bugs when a suscribible isn't a Tematica
         Improved test coverage with Capybara integration tests
