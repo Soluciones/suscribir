@@ -1,5 +1,3 @@
-# coding: UTF-8
-
 module Suscribir
   module SuscripcionBase
     extend ActiveSupport::Concern
@@ -36,7 +34,9 @@ module Suscribir
         atributos_del_suscribible = { suscribible: suscribible, dominio_de_alta: dominio_de_alta }
         atributos_de_la_suscripcion = atributos_del_suscriptor.merge(atributos_del_suscribible)
 
-        create(atributos_de_la_suscripcion)
+        create(atributos_de_la_suscripcion) 
+      rescue ActiveRecord::RecordNotUnique # only on race conditions should happen...
+        busca_suscripcion(suscriptor, suscribible, dominio_de_alta)
       end
 
       def desuscribir(suscriptor, suscribible, dominio_de_alta = 'es')
