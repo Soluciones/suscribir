@@ -11,5 +11,3 @@ module Suscribir
     end
   end
 end
-
-
