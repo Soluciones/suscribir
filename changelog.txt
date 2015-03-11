@@ -1,3 +1,5 @@
+[6.1.1] Suscripcion.url_desuscribir doesn't use Rails helpers, to be compatible with Cron tasks
+        Removed some unused code: SuscripcionDecorator.enlace_desuscripcion_url, Suscribible.dame_datos_para_sendgrid
 [6.1.0] Added SuscripcionDecorator with methods for unsubscribe links
         Preventing duplicate record errors due to race conditions
 [6.0.4] Test with temping, Contenido isn't needed anymore
