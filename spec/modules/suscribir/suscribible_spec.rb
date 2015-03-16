@@ -16,8 +16,14 @@ describe Suscribir::Suscribible do
       expect(subject.suscripciones_a_notificar(excepto: suscriptor.id)).to eq([])
     end
 
+    it 'devuelve las suscripciones de usuarios suscritos por captador (no registrados)' do
+      # Los suscriptores por captador no tienen emailable? definido.
+      expect_any_instance_of(Usuario).to receive(:respond_to?).with(:emailable?).and_return(false)
+      expect(subject.suscripciones_a_notificar).to eq([suscripcion])
+    end
+
     it 'no devuelve suscripciones de usuarios baneados' do
-      allow_any_instance_of(Usuario).to receive(:emailable?).and_return(false)
+      expect_any_instance_of(Usuario).to receive(:emailable?).and_return(false)
       expect(subject.suscripciones_a_notificar).to eq([])
     end
 
