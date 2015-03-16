@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Suscribir::SuscripcionSyncSendGridObserver do
   subject { described_class.new }
-  let(:nombre_lista) { Faker::Lorem.sentence }
+  let(:nombre_lista) { FFaker::Lorem.sentence }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
       allow(tematica).to receive(:nombre_lista) { nombre_lista }
@@ -21,7 +21,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
   describe ".initialize" do
 
     context "si recibe un hash" do
-      let(:acceso) { { user: Faker::Internet.user_name, password: Faker::Lorem.words(3).join } }
+      let(:acceso) { { user: FFaker::Internet.user_name, password: FFaker::Lorem.words(3).join } }
 
       it "lo usa como acceso para SendGrid" do
         expect(GatlingGun).to receive(:new).with(acceso[:user], acceso[:password]).and_call_original
@@ -31,7 +31,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
     end
 
     context "si recibe una instancia de GatlingGun" do
-      let(:un_gatling_gun) { GatlingGun.new(Faker::Internet.user_name, Faker::Lorem.words(3).join) }
+      let(:un_gatling_gun) { GatlingGun.new(FFaker::Internet.user_name, FFaker::Lorem.words(3).join) }
 
       it "la usa como conector para SendGrid" do
         instancia = described_class.new(un_gatling_gun)

@@ -8,22 +8,34 @@ describe Suscribir::Suscribible do
   describe 'suscripciones_a_notificar' do
     let!(:suscripcion) { create(:suscripcion_con_suscriptor, suscriptor: suscriptor, suscribible: subject) }
 
-    it 'devuelve las suscripciones a un suscribible' do
-      expect(subject.suscripciones_a_notificar).to eq([suscripcion])
+    context 'cuando el usuario está marcado emaileable' do
+      before { allow_any_instance_of(Usuario).to receive(:emailable?).and_return(true) }
+
+      it 'devuelve las suscripciones a un suscribible' do
+        expect(subject.suscripciones_a_notificar).to eq([suscripcion])
+      end
+
+      it 'permite excluir el id de usuario' do
+        expect(subject.suscripciones_a_notificar(excepto: suscriptor.id)).to eq([])
+      end
+
+      it 'no devuelve las suscripciones no activas' do
+        suscripcion.update_attribute(:activo, false)
+        expect(subject.suscripciones_a_notificar).not_to match_array([suscripcion])
+      end
+
+      it 'devuelve suscripciones del usuario no suscrito a alertas del foro' do
+        allow_any_instance_of(Usuario).to receive(:foro_alertas).and_return(false)
+        expect(subject.suscripciones_a_notificar).to eq([suscripcion])
+      end
     end
 
-    it 'permite excluir ciertos id de usuario' do
-      expect(subject.suscripciones_a_notificar(excepto: suscriptor.id)).to eq([])
-    end
+    context 'cuando el usuario está marcado como no emaileable' do
+      before { allow_any_instance_of(Usuario).to receive(:emailable?).and_return(false) }
 
-    it 'no devuelve suscripciones de usuarios baneados' do
-      allow_any_instance_of(Usuario).to receive(:emailable?).and_return(false)
-      expect(subject.suscripciones_a_notificar).to eq([])
-    end
-
-    it 'devuelve suscripciones de usuarios no suscritos a alertas del foro' do
-      allow_any_instance_of(Usuario).to receive(:foro_alertas).and_return(false)
-      expect(subject.suscripciones_a_notificar).to eq([suscripcion])
+      it 'no devuelve suscripciones' do
+        expect(subject.suscripciones_a_notificar).to eq([])
+      end
     end
   end
 
@@ -68,7 +80,7 @@ describe Suscribir::Suscribible do
     end
 
     context "con un suscribible con nombre" do
-      before { allow(subject).to receive(:nombre).and_return(Faker::Lorem.sentence) }
+      before { allow(subject).to receive(:nombre).and_return(FFaker::Lorem.sentence) }
 
       it "da un nombre identificativo para la lista de suscriptores" do
         expect(subject.nombre_lista).to include subject.id.to_s

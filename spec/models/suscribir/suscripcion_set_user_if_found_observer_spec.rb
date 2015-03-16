@@ -4,7 +4,7 @@ describe Suscribir::SuscripcionSetUserIfFoundObserver do
   subject { described_class.new }
   let(:suscribible) do
     Tematica.create.tap do |tematica|
-      allow(tematica).to receive(:nombre).and_return(Faker::Lorem.sentence)
+      allow(tematica).to receive(:nombre).and_return(FFaker::Lorem.sentence)
     end
   end
   let(:suscripcion) { build(:suscripcion, suscribible: suscribible) }
