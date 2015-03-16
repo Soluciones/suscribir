@@ -32,9 +32,7 @@ module Suscribir::Suscribible
 
   def suscripciones_a_notificar(opciones = {})
     todas = suscripciones.activas.where.not(suscriptor_id: opciones[:excepto]).includes(:suscriptor).to_a
-    todas.delete_if do |suscripcion|
-      suscripcion.suscriptor.respond_to?(:emailable?) && !suscripcion.suscriptor.emailable?
-    end
+    todas.select { |suscripcion| suscripcion.suscriptor.try(:emailable?) }
   end
 
   def nombre_suscripcion
