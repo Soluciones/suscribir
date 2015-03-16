@@ -21,6 +21,11 @@ describe Suscribir::Suscribible do
       expect(subject.suscripciones_a_notificar).to eq([])
     end
 
+    it 'no devuelve las suscripciones no activas' do
+      suscripcion.update_attribute(:activo, false)
+      expect(subject.suscripciones_a_notificar).not_to match_array([suscripcion])
+    end
+
     it 'devuelve suscripciones de usuarios no suscritos a alertas del foro' do
       allow_any_instance_of(Usuario).to receive(:foro_alertas).and_return(false)
       expect(subject.suscripciones_a_notificar).to eq([suscripcion])
