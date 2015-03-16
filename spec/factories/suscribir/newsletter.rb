@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :newsletter, class: Suscribir::Newsletter do
-    nombre { Faker::Lorem.words(2).join(' ') }
+    nombre { FFaker::Lorem.words(2).join(' ') }
   end
 end

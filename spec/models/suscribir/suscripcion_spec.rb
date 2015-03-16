@@ -168,7 +168,7 @@ describe Suscribir::Suscripcion do
       end
 
       context "con varias suscripciones" do
-        let(:email) { Faker::Internet.email }
+        let(:email) { FFaker::Internet.email }
         let!(:suscripciones) { create_list(:suscripcion, 3, email: email, dominio_de_alta: dominio_de_alta) }
 
         it "elimina las suscripciones a partir del email, suscribible y dominio" do

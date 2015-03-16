@@ -68,7 +68,7 @@ describe Suscribir::Suscribible do
     end
 
     context "con un suscribible con nombre" do
-      before { allow(subject).to receive(:nombre).and_return(Faker::Lorem.sentence) }
+      before { allow(subject).to receive(:nombre).and_return(FFaker::Lorem.sentence) }
 
       it "da un nombre identificativo para la lista de suscriptores" do
         expect(subject.nombre_lista).to include subject.id.to_s
