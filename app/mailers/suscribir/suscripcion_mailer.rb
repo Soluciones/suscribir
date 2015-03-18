@@ -4,7 +4,7 @@ module Suscribir
 
     def desuscribir(suscripcion, url_resuscripcion)
       @url_suscribirme_otra_vez = url_resuscripcion
-      @nombre_suscribible = suscripcion.suscribible.nombre_suscripcion
+      @nombre_suscribible = suscripcion.suscribible.try(:nombre_suscripcion)
       mail(to: suscripcion.email, subject: "Confirmación baja de tu suscripción a #{ @nombre_suscribible }")
     end
 

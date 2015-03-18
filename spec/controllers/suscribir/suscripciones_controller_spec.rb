@@ -73,7 +73,7 @@ module Suscribir
       let(:suscripcion) { create(:suscripcion_con_suscriptor) }
       let(:tematica) { Tematica::Tematica.dame_general }
       let(:clase) { tematica.class }
-      let(:tematica_64) { Base64.encode64(tematica.class.to_s) }
+      let(:tematica_64) { Base64.encode64(clase.to_s) }
       let(:email) { suscripcion.email }
       let(:email_64) { Base64.encode64(email) }
 
@@ -100,7 +100,7 @@ module Suscribir
           usuario = create(:usuario, email: email)
 
           token_bueno = Digest::SHA1.hexdigest(
-            "#{ usuario.email }#{ tematica.class }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
+            "#{ usuario.email }#{ clase }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
 
           expect do
             get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno
@@ -109,7 +109,7 @@ module Suscribir
 
         it 'esperamos que se cree una suscripcion con el email de un usuario anonimo' do
           token_bueno = Digest::SHA1.hexdigest(
-            "#{ email }#{ tematica.class }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
+            "#{ email }#{ clase }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
 
           expect do
             get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno

@@ -4,9 +4,7 @@ describe Suscribir::SuscripcionSyncSendGridObserver do
   subject { described_class.new }
   let(:nombre_lista) { FFaker::Lorem.sentence }
   let(:suscribible) do
-    Tematica.create.tap do |tematica|
-      allow(tematica).to receive(:nombre_lista) { nombre_lista }
-    end
+    create(:tematica).tap { |tematica| allow(tematica).to receive(:nombre_lista).and_return(nombre_lista) }
   end
   let(:suscripcion) { build(:suscripcion, suscribible: suscribible) }
 
