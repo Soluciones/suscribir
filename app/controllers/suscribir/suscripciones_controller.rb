@@ -2,6 +2,7 @@ module Suscribir
   class SuscripcionesController < ApplicationController
     before_filter :pon_lateral, only: [:pedir_confirmacion_baja, :baja_realizada]
     before_filter :sin_breadcrumb
+    before_action :set_suscribible_y_clase, only: [:resuscribir, :baja_realizada]
     layout ::Suscribir::Personalizacion.layout
 
     def pedir_confirmacion_baja
@@ -10,14 +11,12 @@ module Suscribir
     end
 
     def resuscribir
-      clase = Base64.decode64(params[:type])
       email = Base64.decode64(params[:email])
-      @suscribible = clase.constantize.find(params[:suscribible_id])
 
       ya_suscrito = @suscribible.suscripciones.find_by(email: email)
       return if ya_suscrito
 
-      token_bueno = Suscripcion.new(email: email, suscribible_id: @suscribible.id, suscribible_type: clase).token
+      token_bueno = Suscripcion.new(email: email, suscribible_id: @suscribible.id, suscribible_type: @clase).token
       return render_404 unless params[:token] == token_bueno
 
       suscriptor = Usuario.find_by(email: email) || SuscriptorAnonimo.new(email)
@@ -40,10 +39,8 @@ module Suscribir
     end
 
     def baja_realizada
-      clase = Base64.decode64(params[:type]).constantize
-      @suscribible = clase.find(params[:suscribible_id])
       @email = Base64.decode64(params[:email])
-      token_bueno = Suscripcion.new(email: @email, suscribible_id: @suscribible.id, suscribible_type: clase).token
+      token_bueno = Suscripcion.new(email: @email, suscribible_id: @suscribible.id, suscribible_type: @clase).token
       params[:token] == token_bueno or return render_404
 
       @url_resuscripcion = resuscribir_url(params[:type], params[:suscribible_id], params[:email], params[:token])
@@ -53,6 +50,16 @@ module Suscribir
 
     def sin_breadcrumb
       @sin_breadcrumb = 'Sí, por favor, no me pongas breadcrumb'
+    end
+
+    def set_suscribible_y_clase
+      if params[:suscribible_id] == '0'
+        @clase = 'Tematica::Tematica'
+        @suscribible = Tematica::Tematica.dame_general
+      else
+        @clase = Base64.decode64(params[:type]).constantize
+        @suscribible = @clase.find(params[:suscribible_id])
+      end
     end
   end
 end
