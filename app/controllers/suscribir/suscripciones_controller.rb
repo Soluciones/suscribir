@@ -7,7 +7,7 @@ module Suscribir
 
     def pedir_confirmacion_baja
       @suscripcion = Suscripcion.find(params[:suscripcion_id])
-      @suscribible = @suscripcion.suscribible_id == 0 ? Tematica::Tematica.dame_general : @suscripcion.suscribible
+      @suscribible = @suscripcion.suscribible_o_news_general
       render_404 unless params[:token] == @suscripcion.token
     end
 
