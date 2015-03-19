@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :tematica do
+  factory :tematica, class: Tematica::Tematica do
     nombre 'Lorem'
   end
 end

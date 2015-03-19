@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Suscribir::Suscriptor do
   subject { create(:usuario) }
   let(:dominio_de_alta) { 'es' }
-  let(:suscribible)  { Tematica.create }
+  let(:suscribible)  { create(:tematica) }
 
 
   describe "#busca_suscripcion" do

@@ -54,8 +54,8 @@ module Suscribir
 
     def set_suscribible_y_clase
       if params[:suscribible_id] == '0'
-        @clase = 'Tematica::Tematica'
         @suscribible = Tematica::Tematica.dame_general
+        @clase = @suscribible.class
       else
         @clase = Base64.decode64(params[:type]).constantize
         @suscribible = @clase.find(params[:suscribible_id])

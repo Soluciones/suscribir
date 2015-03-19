@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Suscribir::Suscripcion do
   let(:dominio_de_alta) { 'es' }
-  let(:suscribible) { Tematica.create }
+  let(:suscribible) { create(:tematica) }
 
   it "debe ser observable" do
     expect(described_class).to respond_to :add_observer
