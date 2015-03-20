@@ -35,8 +35,13 @@ module Suscribir
 
       suscripcion.destroy
       SuscripcionMailer.desuscribir(suscripcion, url_resuscripcion).deliver
-      redirect_to baja_realizada_path(type: clase, suscribible_id: suscripcion.suscribible_id,
-                                      email: encoded_email, token: token_bueno)
+      respond_to do |format|
+        format.html do
+          redirect_to baja_realizada_path(type: clase, suscribible_id: suscripcion.suscribible_id,
+                                          email: encoded_email, token: token_bueno)
+        end
+        format.js { head :no_content }
+      end
     end
 
     def baja_realizada
