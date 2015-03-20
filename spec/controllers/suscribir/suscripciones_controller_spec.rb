@@ -68,5 +68,54 @@ module Suscribir
         end
       end
     end
+
+    context 'sin tematica (newsletter general), su equivalente en Base64 y un email tambien en Base64' do
+      let(:suscripcion) { create(:suscripcion_con_suscriptor) }
+      let(:tematica) { Tematica::Tematica.dame_general }
+      let(:clase) { tematica.class }
+      let(:tematica_64) { Base64.encode64(clase.to_s) }
+      let(:email) { suscripcion.email }
+      let(:email_64) { Base64.encode64(email) }
+
+      describe 'baja_realizada' do
+        it 'debe mostrar la pagina si el token es correcto' do
+          token_bueno = Suscripcion.new(email: email, suscribible_id: tematica.id, suscribible_type: clase).token
+          get :baja_realizada, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno
+          expect(response).to be_ok
+        end
+
+        it 'debe mostrar nuestro 404 si el token es incorrecto' do
+          get :baja_realizada, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: 'incorrect_token'
+          expect(response.status).to eq(404)
+        end
+      end
+
+      describe 'resuscribir' do
+        it 'esperamos un 404 si el token no es correcto' do
+          get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: 'incorrect_token'
+          expect(response.status).to eq(404)
+        end
+
+        it 'esperamos que se cree una suscripcion con el email de un usuario registrado' do
+          usuario = create(:usuario, email: email)
+
+          token_bueno = Digest::SHA1.hexdigest(
+            "#{ usuario.email }#{ clase }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
+
+          expect do
+            get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno
+          end.to change(Suscripcion, :count).by(1)
+        end
+
+        it 'esperamos que se cree una suscripcion con el email de un usuario anonimo' do
+          token_bueno = Digest::SHA1.hexdigest(
+            "#{ email }#{ clase }#{ tematica.id }#{ Rails.application.secrets.esta_web_secret_token }")
+
+          expect do
+            get :resuscribir, type: tematica_64, suscribible_id: tematica.id, email: email_64, token: token_bueno
+          end.to change(Suscripcion, :count).by(1)
+        end
+      end
+    end
   end
 end

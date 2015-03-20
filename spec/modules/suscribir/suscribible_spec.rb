@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Suscribir::Suscribible do
-  subject { Tematica.create }
+  subject { create(:tematica) }
   let(:dominio_de_alta) { 'es' }
   let(:suscriptor) { create(:usuario) }
 
