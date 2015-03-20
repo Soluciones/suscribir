@@ -1,3 +1,4 @@
+[6.2.3] Fix Newsletter General desuscripciones.
 [6.2.1] Reverted wrong refactor
 [6.2.0] Suscribible.suscripciones_a_notificar only returns active ones
 [6.1.1] Suscripcion.url_desuscribir doesn't use Rails helpers, to be compatible with Cron tasks
