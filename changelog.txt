@@ -1,3 +1,4 @@
+[6.2.4] Allow desuscipciones from ajax request.
 [6.2.3] Fix Newsletter General desuscripciones.
 [6.2.1] Reverted wrong refactor
 [6.2.0] Suscribible.suscripciones_a_notificar only returns active ones
