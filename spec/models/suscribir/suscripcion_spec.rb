@@ -4,10 +4,6 @@ describe Suscribir::Suscripcion do
   let(:dominio_de_alta) { 'es' }
   let(:suscribible) { create(:tematica) }
 
-  it "debe ser observable" do
-    expect(described_class).to respond_to :add_observer
-  end
-
   describe ".suscribir" do
     shared_examples "suscripcion copiando datos" do
       it "rellena el email" do
