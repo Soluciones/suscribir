@@ -1,5 +1,6 @@
 module Suscribir
   class SuscripcionesController < ApplicationController
+    ssl_allowed :desuscribir
     before_filter :pon_lateral, only: [:pedir_confirmacion_baja, :baja_realizada]
     before_filter :sin_breadcrumb
     before_action :set_suscribible_y_clase, only: [:resuscribir, :baja_realizada]
