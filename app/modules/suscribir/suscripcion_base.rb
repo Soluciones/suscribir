@@ -14,6 +14,7 @@ module Suscribir
       validates :email, presence: true, uniqueness: { scope: [:suscribible_type, :suscribible_id, :dominio_de_alta] }
 
       scope :activas, -> { where(activo: true) }
+      scope :en_dominio, ->(dominio = nil) { where(dominio_de_alta: dominio) if dominio.present? }
     end
 
     def token
