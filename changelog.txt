@@ -1,3 +1,4 @@
+[6.2.7] Allow SSL on Suscripcion#desuscribir
 [6.2.6] Remove rails-observers & SendGrid.
 [6.2.5] Add Suscripcion.en_dominio scope.
 [6.2.4] Allow desuscipciones from ajax request.
