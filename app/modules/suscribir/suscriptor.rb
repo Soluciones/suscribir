@@ -6,7 +6,7 @@ module Suscribir::Suscriptor
   extend ActiveSupport::Concern
 
   included do
-    has_many :suscripciones, as: :suscriptor , class_name: 'Suscribir::Suscripcion'
+    has_many :suscripciones, as: :suscriptor, class_name: 'Suscribir::Suscripcion', dependent: :delete_all
   end
 
   def busca_suscripcion(suscribible, dominio_de_alta)
