@@ -5,7 +5,6 @@ describe Suscribir::Suscriptor do
   let(:dominio_de_alta) { 'es' }
   let(:suscribible)  { create(:tematica) }
 
-
   describe "#busca_suscripcion" do
     context "sin ninguna suscripción" do
       it "debe devolver nil" do
@@ -34,6 +33,16 @@ describe Suscribir::Suscriptor do
     context "con dos suscripciones" do
       it "debe devolver dos suscripciones" do
         expect(subject.busca_suscripciones(dominio_de_alta).size).to eq(2)
+      end
+    end
+  end
+
+  describe 'suscripciones relation' do
+    before { create_list(:suscripcion, 3, suscriptor: subject) }
+
+    describe 'delete_all' do
+      it 'should delete instead of nullify them' do
+        expect { subject.suscripciones.delete_all }.to change(Suscribir::Suscripcion, :count).from(3).to(0)
       end
     end
   end
