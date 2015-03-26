@@ -40,8 +40,8 @@ describe Suscribir::Suscriptor do
   describe 'suscripciones relation' do
     before { create_list(:suscripcion, 3, suscriptor: subject) }
 
-    context 'delete_all' do
-      it 'should delete them' do
+    describe 'delete_all' do
+      it 'should delete instead of nullify them' do
         expect { subject.suscripciones.delete_all }.to change(Suscribir::Suscripcion, :count).from(3).to(0)
       end
     end
