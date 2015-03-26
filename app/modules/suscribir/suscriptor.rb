@@ -1,5 +1,3 @@
-# coding: UTF-8
-
 require 'active_support/concern'
 
 module Suscribir::Suscriptor
