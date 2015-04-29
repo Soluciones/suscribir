@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209121650) do
+ActiveRecord::Schema.define(version: 20150429091434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,9 +35,11 @@ ActiveRecord::Schema.define(version: 20150209121650) do
     t.boolean  "activo",           default: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "contacto_id"
   end
 
   add_index "suscribir_suscripciones", ["activo", "suscribible_type", "suscribible_id", "dominio_de_alta"], name: "ix_suscripciones_on_activo_and_suscribible_and_dominio", using: :btree
+  add_index "suscribir_suscripciones", ["contacto_id"], name: "index_suscribir_suscripciones_on_contacto_id", using: :btree
   add_index "suscribir_suscripciones", ["email"], name: "index_suscribir_suscripciones_on_email", using: :btree
   add_index "suscribir_suscripciones", ["provincia_id", "activo", "suscribible_type", "suscribible_id", "dominio_de_alta"], name: "ix_suscripciones_on_provincia_activo_suscribible_and_dominio", using: :btree
   add_index "suscribir_suscripciones", ["suscribible_type", "suscribible_id", "dominio_de_alta", "email"], name: "ix_suscripciones_on_suscribible_and_dominio_and_email", unique: true, using: :btree
