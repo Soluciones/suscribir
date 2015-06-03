@@ -1,3 +1,4 @@
+[6.2.10] Suscribible -> new method id_y_clase
 [6.2.9] new column contacto_id on Suscribir::Suscripciones
 [6.2.8] Suscriptor.suscripciones dependent: :delete_all
 [6.2.7] Allow SSL on Suscripcion#desuscribir
