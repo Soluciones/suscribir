@@ -41,4 +41,8 @@ module Suscribir::Suscribible
   def nombre_suscripcion
     try(:nombre) || try(:titulo)
   end
+  
+  def id_y_clase
+    "#{ id }-#{ self.class }"
+  end
 end
