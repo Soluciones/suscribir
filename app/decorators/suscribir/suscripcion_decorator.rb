@@ -8,5 +8,9 @@ module Suscribir
       # h.engine_suscribir.pedir_confirmacion_baja_url(id, token, host: mi_dominio)
       # ASEGURATE DE QUE TE FUNCIONE DESDE EL CRON
     end
+
+    def link_desuscribir
+      h.link_to "Desuscribirte de #{ suscribible.name }", url_desuscribir
+    end
   end
 end
