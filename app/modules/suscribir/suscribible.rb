@@ -26,10 +26,6 @@ module Suscribir::Suscribible
     Suscribir::Suscripcion.desuscribir(suscriptor, self, dominio_de_alta)
   end
 
-  def nombre_lista
-    "#{self.class.name} id: #{id}#{ " (#{nombre})" if respond_to?(:nombre) }"
-  end
-
   def suscripciones_a_notificar(opciones = {})
     todas = suscripciones.activas.where.not(suscriptor_id: opciones[:excepto]).includes(:suscriptor).to_a
     # Queremos que se envíe a los suscriptores que no responden a emailable? (suscritos por captador)
