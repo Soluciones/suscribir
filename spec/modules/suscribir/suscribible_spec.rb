@@ -69,23 +69,4 @@ describe Suscribir::Suscribible do
       end
     end
   end
-
-  describe "#nombre_lista" do
-    context "con un suscribible sin nombre" do
-      it "da un nombre identificativo para la lista de suscriptores" do
-        expect(subject.nombre_lista).to include subject.id.to_s
-        expect(subject.nombre_lista).to include subject.class.name
-      end
-    end
-
-    context "con un suscribible con nombre" do
-      before { allow(subject).to receive(:nombre).and_return(FFaker::Lorem.sentence) }
-
-      it "da un nombre identificativo para la lista de suscriptores" do
-        expect(subject.nombre_lista).to include subject.id.to_s
-        expect(subject.nombre_lista).to include subject.class.name
-        expect(subject.nombre_lista).to include subject.nombre
-      end
-    end
-  end
 end

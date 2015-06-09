@@ -213,12 +213,4 @@ describe Suscribir::Suscripcion do
       end
     end
   end
-
-  describe "#nombre_lista" do
-    subject { create(:suscripcion) }
-
-    it "delega el método a su suscribible" do
-      expect(subject.nombre_lista).to eq(subject.suscribible.nombre_lista)
-    end
-  end
 end
