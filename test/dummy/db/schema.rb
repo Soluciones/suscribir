@@ -11,18 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429091434) do
+ActiveRecord::Schema.define(version: 20150612082804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "suscribir_newsletters", force: true do |t|
+  create_table "suscribir_newsletters", force: :cascade do |t|
     t.string   "nombre"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "suscripciones_count", default: 0
   end
 
-  create_table "suscribir_suscripciones", force: true do |t|
+  add_index "suscribir_newsletters", ["suscripciones_count"], name: "index_suscribir_newsletters_on_suscripciones_count", using: :btree
+
+  create_table "suscribir_suscripciones", force: :cascade do |t|
     t.integer  "suscribible_id",                  null: false
     t.string   "suscribible_type",                null: false
     t.string   "dominio_de_alta",  default: "es", null: false
@@ -45,13 +48,16 @@ ActiveRecord::Schema.define(version: 20150429091434) do
   add_index "suscribir_suscripciones", ["suscribible_type", "suscribible_id", "dominio_de_alta", "email"], name: "ix_suscripciones_on_suscribible_and_dominio_and_email", unique: true, using: :btree
   add_index "suscribir_suscripciones", ["suscriptor_type", "suscriptor_id", "activo"], name: "ix_suscripciones_on_suscriptor_and_activo", using: :btree
 
-  create_table "tematicas", force: true do |t|
+  create_table "tematicas", force: :cascade do |t|
     t.string   "nombre"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "suscripciones_count",             default: 0
   end
 
-  create_table "usuarios", force: true do |t|
+  add_index "tematicas", ["suscripciones_count"], name: "index_tematicas_on_suscripciones_count", using: :btree
+
+  create_table "usuarios", force: :cascade do |t|
     t.string   "nombre"
     t.string   "apellidos"
     t.string   "email"
