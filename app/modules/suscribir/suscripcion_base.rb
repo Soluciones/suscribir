@@ -4,7 +4,7 @@ module Suscribir
 
     included do
       belongs_to :suscribible, polymorphic: true
-      belongs_to :suscriptor, polymorphic: true
+      belongs_to :suscriptor, polymorphic: true, counter_cache: :suscripciones_count
       belongs_to :provincia
 
       delegate :nombre_suscripcion, to: :suscribible
