@@ -1,3 +1,3 @@
 module Suscribir
-  VERSION = '6.3.1'
+  VERSION = '7.0.1'
 end

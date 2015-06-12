@@ -1,6 +1,5 @@
 module Suscribir
   class SuscripcionesController < ApplicationController
-    ssl_allowed :desuscribir
     before_filter :pon_lateral, only: [:pedir_confirmacion_baja, :baja_realizada]
     before_filter :sin_breadcrumb
     before_action :set_suscribible_y_clase, only: [:resuscribir, :baja_realizada]
@@ -23,7 +22,7 @@ module Suscribir
 
       suscriptor = Usuario.find_by(email: email) || SuscriptorAnonimo.new(email)
       @suscribible.suscribe_a!(suscriptor, I18n.locale)
-      SuscripcionMailer.resuscribir(suscriptor, @suscribible).deliver
+      SuscripcionMailer.resuscribir(suscriptor, @suscribible).deliver_now
     end
 
     def desuscribir
@@ -35,7 +34,7 @@ module Suscribir
       url_resuscripcion = resuscribir_url(clase, suscripcion.suscribible_id, encoded_email, token_bueno)
 
       suscripcion.destroy
-      SuscripcionMailer.desuscribir(suscripcion, url_resuscripcion).deliver
+      SuscripcionMailer.desuscribir(suscripcion, url_resuscripcion).deliver_now
       respond_to do |format|
         format.html do
           redirect_to baja_realizada_path(type: clase, suscribible_id: suscripcion.suscribible_id,
