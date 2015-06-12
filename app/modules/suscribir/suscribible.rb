@@ -38,6 +38,10 @@ module Suscribir::Suscribible
     try(:nombre) || try(:titulo)
   end
 
+  def cookie_key
+    "no_mostrar-#{ id_y_clase }"
+  end
+
   def id_y_clase
     "#{ id }-#{ self.class }"
   end
