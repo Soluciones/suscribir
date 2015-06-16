@@ -3,7 +3,7 @@ module Suscribir
     extend ActiveSupport::Concern
 
     included do
-      belongs_to :suscribible, polymorphic: true
+      belongs_to :suscribible, polymorphic: true, counter_cache: :suscripciones_count
       belongs_to :suscriptor, polymorphic: true
       belongs_to :provincia
 

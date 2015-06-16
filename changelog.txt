@@ -1,3 +1,4 @@
+[7.0.1] Add suscribible.suscripciones_count counter_cache
 [7.0.0] Upgraded to Rails 4.2
 [6.3.0] SuscripcionDecorator -> new method link_desuscibir
 [6.2.10] Suscribible -> new method id_y_clase

@@ -5,6 +5,7 @@ Temping.create :mi_suscribible do
   include Suscribir::Suscribible
   with_columns do |t|
     t.string(:titulo)
+    t.integer(:suscripciones_count)
   end
 end
 
