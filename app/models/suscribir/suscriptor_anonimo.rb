@@ -1,11 +1,9 @@
-# coding: UTF-8
-
 module Suscribir
   class SuscriptorAnonimo
     attr_accessor :email, :nombre_apellidos, :cod_postal, :provincia_id
 
-    def initialize(campos = {})
-      self.email = campos[:email]
+    def initialize(email = nil, campos = {})
+      self.email = email
       self.nombre_apellidos = campos[:nombre_apellidos]
       self.cod_postal = campos[:cod_postal]
       self.provincia_id = campos[:provincia_id]
