@@ -6,6 +6,7 @@ module Suscribir::Suscribible
   included do
     has_many :suscripciones, as: :suscribible , class_name: 'Suscribir::Suscripcion'
     has_many :suscriptores, through: :suscripciones, source_type: 'Usuario'
+    has_many :newsletters, as: :suscribible, class_name: 'NewsTematica::NewsTematica'
 
     delegate :activas, to: :suscripciones, prefix: true
   end
@@ -36,6 +37,10 @@ module Suscribir::Suscribible
 
   def nombre_suscripcion
     try(:nombre) || try(:titulo)
+  end
+
+  def cookie_key
+    "no_mostrar-#{ id_y_clase }"
   end
 
   def id_y_clase
