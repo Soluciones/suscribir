@@ -1,3 +1,6 @@
+[6.3.2] SuscriptorAnonimo can be initialized with data other than email
+        Now suscribibles have suscribible.newsletters
+        Added suscribible.cookie_key
 [6.3.1] Add suscriptor.suscripciones_count counter_cache
 [6.3.0] SuscripcionDecorator -> new method link_desuscibir
 [6.2.10] Suscribible -> new method id_y_clase
