@@ -15,6 +15,8 @@ module Suscribir
 
       scope :activas, -> { where(activo: true) }
       scope :en_dominio, ->(dominio = nil) { where(dominio_de_alta: dominio) if dominio.present? }
+      scope :sin_provincia, -> { where(provincia_id: nil) }
+      scope :en_provincia_si_viene, ->(provincias_id) { where(provincia_id: provincias_id) if provincias_id.present? }
     end
 
     def token
