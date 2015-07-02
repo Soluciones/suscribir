@@ -40,13 +40,13 @@ module Suscribir::Suscriptor
   private
 
   def suscribe_a_nuevas(clase_suscribible, ids_seleccionadas, ids_ya_suscritas)
-    ids_nuevas = ids_seleccionadas.select { |id| ids_ya_suscritas.exclude? id }
+    ids_nuevas = ids_seleccionadas - ids_ya_suscritas
     return if ids_nuevas.blank?
     suscribeme_a!(clase_suscribible.where(id: ids_nuevas), I18n.locale)
   end
 
   def desuscribe_ya_no_quiere(clase_suscribible, ids_seleccionadas, ids_ya_suscritas)
-    ids_que_ya_no_quiere = ids_ya_suscritas.select { |id| ids_seleccionadas.exclude? id }
+    ids_que_ya_no_quiere = ids_ya_suscritas - ids_seleccionadas
     return if ids_que_ya_no_quiere.blank?
     desuscribeme_de!(clase_suscribible.where(id: ids_que_ya_no_quiere), I18n.locale)
   end
