@@ -19,5 +19,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 4.1.5'
   s.add_dependency 'draper'
   s.add_dependency 'haml-rails'
-  s.add_dependency 'bartt-ssl_requirement', '~>1.4.0'
 end
