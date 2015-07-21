@@ -1,3 +1,4 @@
+[7.0.0] Remove SSL requirement
 [6.3.4] Useful suscriptor methods to clean rankia & verema
 [6.3.3] Fixed bugs on merging 6.3.1 & 6.3.2
 [6.3.2] SuscriptorAnonimo can be initialized with data other than email

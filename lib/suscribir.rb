@@ -2,7 +2,6 @@ require 'suscribir/engine'
 require 'haml-rails'
 require 'psique'
 require 'draper'
-require 'ssl_requirement'
 
 module Suscribir
   module Personalizacion
