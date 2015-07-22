@@ -3,6 +3,20 @@ module Suscribir
     extend ActiveSupport::Concern
 
     included do
+
+      enum procedencia: {
+        todos: 'todos',
+        blogs: 'blogs',
+        foros: 'foros',
+        videos: 'vídeos'
+      }
+
+      enum frecuencia: {
+        inmediata: 'inmediata',
+        diaria: 'diaria',
+        semanal: 'semanal'
+      }
+
       belongs_to :suscribible, polymorphic: true, counter_cache: :suscripciones_count
       belongs_to :suscriptor, polymorphic: true
       belongs_to :provincia
