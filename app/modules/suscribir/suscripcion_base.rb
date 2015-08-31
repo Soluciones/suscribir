@@ -64,7 +64,7 @@ module Suscribir
       def desuscribir(suscriptor, suscribible, dominio_de_alta = 'es')
         return desuscribir_multiples_suscribibles(suscriptor, suscribible, dominio_de_alta) if suscribible.respond_to?(:each)
 
-        busca_suscripcion(suscriptor, suscribible, dominio_de_alta).destroy
+        busca_suscripcion(suscriptor, suscribible, dominio_de_alta).try(:destroy)
       end
 
       def busca_suscripcion(suscriptor, suscribible, dominio_de_alta = 'es')

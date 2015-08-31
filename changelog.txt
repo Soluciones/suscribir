@@ -1,3 +1,4 @@
+[7.1.1] Avoid destroy when busca_suscripcion returns nil
 [7.1.0] New fields for suscripcion: procedencia, frecuencia and mejores
 [7.0.0] Remove SSL requirement
 [6.3.4] Useful suscriptor methods to clean rankia & verema
