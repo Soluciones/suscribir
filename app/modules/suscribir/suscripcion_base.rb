@@ -38,11 +38,6 @@ module Suscribir
       Digest::SHA1.hexdigest("#{ email_y_suscribible }#{ Rails.application.secrets.esta_web_secret_token }")
     end
 
-    def suscribible_o_news_general
-      return Tematica::Tematica.dame_general if suscribible_id == 0
-      suscribible
-    end
-
     module ClassMethods
       def suscribir(suscriptor, suscribible, dominio_de_alta = 'es')
         return suscribir_multiples_suscribibles(suscriptor, suscribible, dominio_de_alta) if suscribible.respond_to?(:each)

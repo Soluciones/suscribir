@@ -71,7 +71,7 @@ module Suscribir
 
     context 'sin tematica (newsletter general), su equivalente en Base64 y un email tambien en Base64' do
       let(:suscripcion) { create(:suscripcion_con_suscriptor) }
-      let(:tematica) { Tematica::Tematica.dame_general }
+      let(:tematica) { Suscribir::Newsletter.first || create(:newsletter) }
       let(:clase) { tematica.class }
       let(:tematica_64) { Base64.encode64(clase.to_s) }
       let(:email) { suscripcion.email }
