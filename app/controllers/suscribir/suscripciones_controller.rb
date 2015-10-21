@@ -7,7 +7,7 @@ module Suscribir
 
     def pedir_confirmacion_baja
       @suscripcion = Suscripcion.find(params[:suscripcion_id])
-      @suscribible = @suscripcion.suscribible_o_news_general
+      @suscribible = @suscripcion.suscribible
       render_404 unless params[:token] == @suscripcion.token
     end
 
@@ -59,13 +59,8 @@ module Suscribir
     end
 
     def set_suscribible_y_clase
-      if params[:suscribible_id] == '0'
-        @suscribible = Tematica::Tematica.dame_general
-        @clase = @suscribible.class
-      else
-        @clase = Base64.decode64(params[:type]).constantize
-        @suscribible = @clase.find(params[:suscribible_id])
-      end
+      @clase = Base64.decode64(params[:type]).constantize
+      @suscribible = @clase.find(params[:suscribible_id])
     end
   end
 end
