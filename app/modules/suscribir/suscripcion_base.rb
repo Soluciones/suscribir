@@ -3,6 +3,20 @@ module Suscribir
     extend ActiveSupport::Concern
 
     included do
+
+      enum procedencia: {
+        todos: 'todos',
+        blogs: 'blogs',
+        foros: 'foros',
+        videos: 'vídeos'
+      }
+
+      enum frecuencia: {
+        inmediata: 'inmediata',
+        diaria: 'diaria',
+        semanal: 'semanal'
+      }
+
       belongs_to :suscribible, polymorphic: true, counter_cache: :suscripciones_count
       belongs_to :suscriptor, polymorphic: true
       belongs_to :provincia
@@ -22,11 +36,6 @@ module Suscribir
     def token
       email_y_suscribible = "#{ email }#{ suscribible_type }#{ suscribible_id }"
       Digest::SHA1.hexdigest("#{ email_y_suscribible }#{ Rails.application.secrets.esta_web_secret_token }")
-    end
-
-    def suscribible_o_news_general
-      return Tematica::Tematica.dame_general if suscribible_id == 0
-      suscribible
     end
 
     module ClassMethods
@@ -50,7 +59,7 @@ module Suscribir
       def desuscribir(suscriptor, suscribible, dominio_de_alta = 'es')
         return desuscribir_multiples_suscribibles(suscriptor, suscribible, dominio_de_alta) if suscribible.respond_to?(:each)
 
-        busca_suscripcion(suscriptor, suscribible, dominio_de_alta).destroy
+        busca_suscripcion(suscriptor, suscribible, dominio_de_alta).try(:destroy)
       end
 
       def busca_suscripcion(suscriptor, suscribible, dominio_de_alta = 'es')

@@ -4,7 +4,7 @@ module Suscribir::Suscribible
   extend ActiveSupport::Concern
 
   included do
-    has_many :suscripciones, as: :suscribible , class_name: 'Suscribir::Suscripcion'
+    has_many :suscripciones, as: :suscribible, class_name: 'Suscribir::Suscripcion', dependent: :delete_all
     has_many :suscriptores, through: :suscripciones, source_type: 'Usuario'
     has_many :newsletters, as: :suscribible, class_name: 'NewsTematica::NewsTematica'
 
