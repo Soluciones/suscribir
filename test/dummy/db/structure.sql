@@ -44,7 +44,7 @@ CREATE TYPE procedencia AS ENUM (
     'todos',
     'blogs',
     'foros',
-    'videos'
+    'vídeos'
 );
 
 
@@ -57,7 +57,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE schema_migrations (
-    version character varying(255) NOT NULL
+    version character varying NOT NULL
 );
 
 
@@ -67,7 +67,7 @@ CREATE TABLE schema_migrations (
 
 CREATE TABLE suscribir_newsletters (
     id integer NOT NULL,
-    nombre character varying(255),
+    nombre character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     suscripciones_count integer DEFAULT 0
@@ -100,13 +100,13 @@ ALTER SEQUENCE suscribir_newsletters_id_seq OWNED BY suscribir_newsletters.id;
 CREATE TABLE suscribir_suscripciones (
     id integer NOT NULL,
     suscribible_id integer NOT NULL,
-    suscribible_type character varying(255) NOT NULL,
-    dominio_de_alta character varying(255) DEFAULT 'es'::character varying NOT NULL,
+    suscribible_type character varying NOT NULL,
+    dominio_de_alta character varying DEFAULT 'es'::character varying NOT NULL,
     suscriptor_id integer,
-    suscriptor_type character varying(255),
-    email character varying(255) NOT NULL,
-    nombre_apellidos character varying(255),
-    cod_postal character varying(255),
+    suscriptor_type character varying,
+    email character varying NOT NULL,
+    nombre_apellidos character varying,
+    cod_postal character varying,
     provincia_id integer,
     activo boolean DEFAULT true,
     created_at timestamp without time zone,
@@ -143,7 +143,7 @@ ALTER SEQUENCE suscribir_suscripciones_id_seq OWNED BY suscribir_suscripciones.i
 
 CREATE TABLE tematicas (
     id integer NOT NULL,
-    nombre character varying(255),
+    nombre character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     suscripciones_count integer DEFAULT 0
@@ -175,10 +175,10 @@ ALTER SEQUENCE tematicas_id_seq OWNED BY tematicas.id;
 
 CREATE TABLE usuarios (
     id integer NOT NULL,
-    nombre character varying(255),
-    apellidos character varying(255),
-    email character varying(255),
-    cod_postal character varying(255),
+    nombre character varying,
+    apellidos character varying,
+    email character varying,
+    cod_postal character varying,
     provincia_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
